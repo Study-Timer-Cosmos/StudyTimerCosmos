@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{36173C45-FCC2-4194-8F83-ACAA73C58DD7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D5859A68-7F07-425B-876B-D0F3B39A9FEE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{5810B94D-E928-40F3-9372-CCF97954AECA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyTimer.Domain", "Core\StudyTimer.Domain\StudyTimer.Domain.csproj", "{E9228BFD-258F-4847-8E3A-74B4FD45E4E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyTimer.Persistence", "Infrastructure\StudyTimer.Persistence\StudyTimer.Persistence.csproj", "{41AFFD28-6D10-469E-B814-2C88ED641BFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyTimer.MVC", "Presentation\StudyTimer.MVC\StudyTimer.MVC.csproj", "{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E9228BFD-258F-4847-8E3A-74B4FD45E4E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9228BFD-258F-4847-8E3A-74B4FD45E4E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9228BFD-258F-4847-8E3A-74B4FD45E4E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9228BFD-258F-4847-8E3A-74B4FD45E4E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41AFFD28-6D10-469E-B814-2C88ED641BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41AFFD28-6D10-469E-B814-2C88ED641BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41AFFD28-6D10-469E-B814-2C88ED641BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41AFFD28-6D10-469E-B814-2C88ED641BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E9228BFD-258F-4847-8E3A-74B4FD45E4E1} = {36173C45-FCC2-4194-8F83-ACAA73C58DD7}
+		{41AFFD28-6D10-469E-B814-2C88ED641BFF} = {D5859A68-7F07-425B-876B-D0F3B39A9FEE}
+		{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA} = {5810B94D-E928-40F3-9372-CCF97954AECA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1896E891-FA9B-4388-8888-E06328DECA33}
+	EndGlobalSection
+EndGlobal
