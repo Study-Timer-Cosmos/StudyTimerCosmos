@@ -14,10 +14,11 @@ namespace StudyTimer.Persistence.Contexts
         public StudyTimerDbContext CreateDbContext(string[] args)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName+ "\\Presentation\\StudyTimer.MVC\\")
                 .AddJsonFile("appsettings.json")
                 .Build();
-
+            //C: \Users\seyyi\Documents\GitHub\Team7-Project\StudyTimer\Presentation\StudyTimer.MVC\appsettings.json
+            //C:\Users\seyyi\Documents\GitHub\Team7-Project\StudyTimer\Infrastructure\StudyTimer.Persistence\StudyTimer.Persistence.csproj
             var optionsBuilder = new DbContextOptionsBuilder<StudyTimerDbContext>();
 
             var connectionString = configuration.GetSection("Team7PostgreSQLDB").Value;
