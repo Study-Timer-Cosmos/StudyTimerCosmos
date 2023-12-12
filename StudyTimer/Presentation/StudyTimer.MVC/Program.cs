@@ -7,13 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
-var connectionString = builder.Configuration.GetSection("Team7PostgreSQLDB").Value;
+//var connectionString = builder.Configuration.GetSection("Team7PostgreSQLDB").Value;
 
-builder.Services.AddDbContext<StudyTimerDbContext>(options =>
-{
-    options.UseNpgsql(connectionString);
-});
+//builder.Services.AddDbContext<StudyTimerDbContext>(options =>
+//{
+//    options.UseNpgsql(connectionString);
+//});
 
+builder.Services.AddDbContext<StudyTimerDbContext>();
 
 
 
