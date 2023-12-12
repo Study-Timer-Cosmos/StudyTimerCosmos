@@ -11,6 +11,8 @@ namespace StudyTimer.Domain.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public Duty Duty { get; set; }
+        public Guid DutyId { get; set; }
 
     }
 }

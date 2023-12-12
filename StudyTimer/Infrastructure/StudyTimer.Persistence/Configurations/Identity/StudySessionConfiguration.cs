@@ -51,10 +51,10 @@ namespace StudyTimer.Persistence.Configurations.Identity
             // IsDeleted
             builder.Property(x => x.IsDeleted).IsRequired();
 
-            // Relationships
-            builder.HasOne<Task>(x => x.Session)
-                .WithMany(x => x.Products)
-                .HasForeignKey(x => x.CategoryId);
+            //relationships
+            //builder.hasone<studysession>(x => x.duties)
+            //    .withmany(x => x.products)
+            //    .hasforeignkey(x => x.categoryıd);
 
 
             builder.ToTable("StudySessions");

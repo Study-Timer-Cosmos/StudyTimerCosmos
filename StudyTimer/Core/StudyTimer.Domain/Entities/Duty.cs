@@ -14,5 +14,8 @@ namespace StudyTimer.Domain.Entities
         public bool isFinished { get; set; }
         public TimeSpan TaskTime { get; set; }
         public StudySession Session { get; set; }
+        public Guid SessionId { get; set; }
+        public ICollection<Category> Categories { get; set; }
+
     }
 }

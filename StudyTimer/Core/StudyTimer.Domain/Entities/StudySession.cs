@@ -12,7 +12,7 @@ namespace StudyTimer.Domain.Entities
         public Guid Id { get; set; }
         public DateTimeOffset StartTime { get; set; }
         public DateTimeOffset EndTime { get; set; }
-        public IEnumerable<Duty> Duties { get; set; }
+        public ICollection<Duty> Duties { get; set; }
         public ICollection<UserStudySession> Sessions { get; set; }
 
 
