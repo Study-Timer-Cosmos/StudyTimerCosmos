@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /StudyTimer/Presentation/StudyTimer.MVC/appsettings.json
+StudyTimer/Presentation/StudyTimer.MVC/appsettings.json
