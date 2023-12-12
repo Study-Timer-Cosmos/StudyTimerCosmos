@@ -8,7 +8,7 @@ namespace StudyTimer.Domain.Common
 {
     public interface IModifiedOn
     {
-        DateTime? ModifiedOn { get; set; }
-        string? ModifiedByUserId { get; set; }
+        public DateTimeOffset? ModifiedOn { get; set; }
+        public string? ModifiedByUserId { get; set; }
     }
 }

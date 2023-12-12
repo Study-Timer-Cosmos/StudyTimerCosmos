@@ -1,7 +1,27 @@
+using Microsoft.EntityFrameworkCore;
+using StudyTimer.Persistence.Contexts;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+//var connectionString = builder.Configuration.GetSection("Team7PostgreSQLDB").Value;
+
+//builder.Services.AddDbContext<StudyTimerDbContext>(options =>
+//{
+//    options.UseNpgsql(connectionString);
+//});
+
+builder.Services.AddDbContext<StudyTimerDbContext>();
+
+
+
+
+
+
+
 
 var app = builder.Build();
 

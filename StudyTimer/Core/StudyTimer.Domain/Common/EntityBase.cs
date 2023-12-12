@@ -17,8 +17,9 @@ namespace StudyTimer.Domain.Common
        
 
         public string? DeletedByUserId { get; set; }
-        public DateTime DeletedOn { get; set; }
+        public DateTimeOffset? DeletedOn { get; set; }
         public bool IsDeleted { get; set; }
-        DateTime? ModifiedOn { get; set; }
+        public DateTimeOffset? ModifiedOn { get; set; }
+        
     }
 }
