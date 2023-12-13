@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using StudyTimer.Domain.Identity;
 using StudyTimer.Persistence.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,15 +9,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
-//var connectionString = builder.Configuration.GetSection("Team7PostgreSQLDB").Value;
-
-//builder.Services.AddDbContext<StudyTimerDbContext>(options =>
-//{
-//    options.UseNpgsql(connectionString);
-//});
-
 builder.Services.AddDbContext<StudyTimerDbContext>();
 
+builder.Services.AddIdentity<User, Role>(options =>
+{
+    // User Password Options
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 0;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    // User Username and Email Options
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@$";
+    options.User.RequireUniqueEmail = true;
+
+}).AddEntityFrameworkStores<StudyTimerDbContext>()
+    .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
 
 
 
