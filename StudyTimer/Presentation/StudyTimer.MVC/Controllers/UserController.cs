@@ -1,37 +1,50 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StudyTimer.Application.Models;
 using StudyTimer.Domain.Identity;
-using System.ComponentModel.DataAnnotations;
+using StudyTimer.MVC.Models;
 
-namespace StudyTimer.API.Controllers
+namespace StudyTimer.MVC.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    public class UserController : Controller
     {
-
         private readonly UserManager<User> _userManager;
+
         private readonly SignInManager<User> _signInManager;
+
         //private readonly IToastNotification _toastNotification;
         //private readonly IResend _resend;
         private readonly IWebHostEnvironment _environment;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IWebHostEnvironment environment)
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager,
+            IWebHostEnvironment environment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _environment = environment;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RegisterAsync(AuthRegisterViewModel registerViewModel)
+        [HttpGet]
+        public IActionResult Register()
         {
-            var userId = Guid.NewGuid();
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    return RedirectToAction(nameof(Index), "Home");
+            //}
 
+            var registerViewModel = new AuthViewModel();
+
+
+            return View(registerViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterAsync(AuthViewModel registerViewModel)
+        {
             if (!ModelState.IsValid)
-                return BadRequest(registerViewModel);
+                return View(registerViewModel);
+
+            var userId = Guid.NewGuid();
 
             var user = new User()
             {
@@ -42,28 +55,21 @@ namespace StudyTimer.API.Controllers
                 Gender = registerViewModel.Gender,
                 BirthDate = registerViewModel.BirthDate.Value.ToUniversalTime(),
                 UserName = registerViewModel.UserName,
-                Sessions = registerViewModel.Sessions,
                 CreatedOn = DateTime.UtcNow,
                 CreatedByUserId = userId.ToString()
             };
 
-
-
             var identityResult = await _userManager.CreateAsync(user, registerViewModel.Password);
 
-            if (identityResult.Succeeded)
+            if (!identityResult.Succeeded)
             {
-                // User creation was successful.
-                // You might want to customize the response based on your requirements.
-                return Ok(new { Message = "User registration successful." });
-            }
-            else
-            {
-                // User creation failed. Return an appropriate response.
-                return BadRequest(new { Errors = identityResult.Errors });
+                foreach (var error in identityResult.Errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+
+                return View(registerViewModel);
             }
         }
-
-
     }
 }

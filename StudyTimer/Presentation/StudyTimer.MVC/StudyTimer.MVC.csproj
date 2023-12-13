@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\StudyTimer.Application\StudyTimer.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\StudyTimer.Persistence\StudyTimer.Persistence.csproj" />
   </ItemGroup>
 

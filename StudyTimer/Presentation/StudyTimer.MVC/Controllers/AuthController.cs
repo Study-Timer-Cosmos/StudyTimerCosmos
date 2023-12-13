@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using StudyTimer.Application.Models;
 using StudyTimer.Domain.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using StudyTimer.MVC.Models;
 
-namespace StudyTimer.API.Controllers
+namespace StudyTimer.MVC.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class AuthController : ControllerBase
     {
 
@@ -23,6 +24,19 @@ namespace StudyTimer.API.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _environment = environment;
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    return RedirectToAction(nameof(Index), "Home");
+            //}
+
+            var registerViewModel = new AuthViewModel();
+            return View();
+            //return View(registerViewModel);
         }
 
         [HttpPost]
@@ -62,8 +76,9 @@ namespace StudyTimer.API.Controllers
                 // User creation failed. Return an appropriate response.
                 return BadRequest(new { Errors = identityResult.Errors });
             }
-        }
 
+
+        }
 
     }
 }

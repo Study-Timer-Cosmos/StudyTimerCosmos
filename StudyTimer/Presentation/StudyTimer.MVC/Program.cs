@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSession();
+
 
 builder.Services.AddDbContext<StudyTimerDbContext>();
 
@@ -28,12 +30,34 @@ builder.Services.AddIdentity<User, Role>(options =>
     .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
 
 
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.FromMinutes(30);
+});
 
-
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = new PathString("/Auth/Login");
+    options.LogoutPath = new PathString("/Auth/Logout");
+    options.Cookie = new CookieBuilder
+    {
+        Name = "StudyTimer",
+        HttpOnly = true,
+        SameSite = SameSiteMode.Strict,
+        SecurePolicy = CookieSecurePolicy.SameAsRequest // Always
+    };
+    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = System.TimeSpan.FromDays(7);
+    options.AccessDeniedPath = new PathString("/Auth/AccessDenied");
+});
 
 
 
 var app = builder.Build();
+
+
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -49,6 +73,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
