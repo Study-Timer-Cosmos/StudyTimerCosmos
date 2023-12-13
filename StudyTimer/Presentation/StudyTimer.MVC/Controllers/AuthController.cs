@@ -85,7 +85,7 @@ namespace StudyTimer.MVC.Controllers
     
 
 
-    [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> RegisterAsync(AuthViewModel registerViewModel)
         {
             if (!ModelState.IsValid)
@@ -120,6 +120,14 @@ namespace StudyTimer.MVC.Controllers
 
            return RedirectToAction("Index", controllerName: "Home");
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+        }
+
+
     }
 }
 
