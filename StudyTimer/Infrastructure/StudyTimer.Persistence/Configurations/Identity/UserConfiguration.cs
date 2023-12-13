@@ -37,7 +37,7 @@ namespace StudyTimer.Persistence.Configurations.Identity
             builder.Property(x => x.FirstName).IsRequired();
             builder.Property(x => x.FirstName).HasMaxLength(70);
 
-            // SurName
+            // LastName
             builder.Property(x => x.LastName).IsRequired();
             builder.Property(x => x.LastName).HasMaxLength(70);
 

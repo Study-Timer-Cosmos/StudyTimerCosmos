@@ -9,11 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{5810B94D-E928-40F3-9372-CCF97954AECA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyTimer.Domain", "Core\StudyTimer.Domain\StudyTimer.Domain.csproj", "{E9228BFD-258F-4847-8E3A-74B4FD45E4E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudyTimer.Domain", "Core\StudyTimer.Domain\StudyTimer.Domain.csproj", "{E9228BFD-258F-4847-8E3A-74B4FD45E4E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyTimer.Persistence", "Infrastructure\StudyTimer.Persistence\StudyTimer.Persistence.csproj", "{41AFFD28-6D10-469E-B814-2C88ED641BFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudyTimer.Persistence", "Infrastructure\StudyTimer.Persistence\StudyTimer.Persistence.csproj", "{41AFFD28-6D10-469E-B814-2C88ED641BFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyTimer.MVC", "Presentation\StudyTimer.MVC\StudyTimer.MVC.csproj", "{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudyTimer.MVC", "Presentation\StudyTimer.MVC\StudyTimer.MVC.csproj", "{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudyTimer.Application", "Core\StudyTimer.Application\StudyTimer.Application.csproj", "{CA0F6AD5-378B-47BD-BE23-ACA726B898B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA0F6AD5-378B-47BD-BE23-ACA726B898B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA0F6AD5-378B-47BD-BE23-ACA726B898B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA0F6AD5-378B-47BD-BE23-ACA726B898B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA0F6AD5-378B-47BD-BE23-ACA726B898B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +47,7 @@ Global
 		{E9228BFD-258F-4847-8E3A-74B4FD45E4E1} = {36173C45-FCC2-4194-8F83-ACAA73C58DD7}
 		{41AFFD28-6D10-469E-B814-2C88ED641BFF} = {D5859A68-7F07-425B-876B-D0F3B39A9FEE}
 		{EFFC2969-CD5B-4217-9F7D-22ABAEDD55FA} = {5810B94D-E928-40F3-9372-CCF97954AECA}
+		{CA0F6AD5-378B-47BD-BE23-ACA726B898B2} = {36173C45-FCC2-4194-8F83-ACAA73C58DD7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1896E891-FA9B-4388-8888-E06328DECA33}
