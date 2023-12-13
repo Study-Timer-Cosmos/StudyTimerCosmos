@@ -4,14 +4,27 @@ using StudyTimer.Domain.Identity;
 using StudyTimer.Persistence.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services
+    .AddControllersWithViews()
+    .AddNToastNotifyToastr();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession();
 
+string connectionString = builder.Configuration.GetSection("Team7PostgreSQLDB").Value;
+builder.Services.AddDbContext<StudyTimerDbContext>(options =>
+{
+    options.UseNpgsql(connectionString);
+});
 
-builder.Services.AddDbContext<StudyTimerDbContext>();
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.FromMinutes(30);
+});
+
+//builder.Services.AddMvc().AddNToastNotifyToastr();
 
 builder.Services.AddIdentity<User, Role>(options =>
 {
@@ -75,6 +88,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseSession();
+
+app.UseNToastNotify();
 
 app.MapControllerRoute(
     name: "default",
