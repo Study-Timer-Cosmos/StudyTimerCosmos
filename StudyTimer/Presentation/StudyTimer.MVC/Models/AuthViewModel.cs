@@ -22,10 +22,11 @@ namespace StudyTimer.MVC.Models
         [Required]
         public string FirstName { get; set; }
         [Required]
-        public string SurName { get; set; }
+        public string LastName { get; set; }
+        [Required]
         public DateTime? BirthDate { get; set; }
         [Required]
         public Gender Gender { get; set; }
-        public ICollection<UserStudySession> Sessions { get; set; }
+        //public ICollection<UserStudySession> Sessions { get; set; }
     }
 }

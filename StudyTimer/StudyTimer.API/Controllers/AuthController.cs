@@ -38,11 +38,10 @@ namespace StudyTimer.API.Controllers
                 Id = userId,
                 Email = registerViewModel.Email,
                 FirstName = registerViewModel.FirstName,
-                LastName = registerViewModel.SurName,
+                LastName = registerViewModel.LastName,
                 Gender = registerViewModel.Gender,
                 BirthDate = registerViewModel.BirthDate.Value.ToUniversalTime(),
-                UserName = registerViewModel.UserName,
-                Sessions = registerViewModel.Sessions,
+                UserName = registerViewModel.LastName,
                 CreatedOn = DateTime.UtcNow,
                 CreatedByUserId = userId.ToString()
             };
