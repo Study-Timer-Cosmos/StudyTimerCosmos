@@ -89,7 +89,7 @@ namespace StudyTimer.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(registerViewModel);
 
-            AuthRegisterResponseModel authRegisterResponseModel = await _authManager.RegisterAsync(registerViewModel);
+            AuthResponseModel authRegisterResponseModel = await _authManager.RegisterAsync(registerViewModel);
 
             if (!authRegisterResponseModel.Succeeded)
             {
@@ -106,6 +106,28 @@ namespace StudyTimer.MVC.Controllers
             Console.WriteLine($"Verify Link: https://localhost:7154/Auth/VerifyEmail?email={registerViewModel.Email}&token={authRegisterResponseModel.userToken}");
 
             _toastService.SuccessMessage("You've successfully registered to the application.");
+
+            return RedirectToAction(nameof(Login));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> VerifyEmailAsync(string email, string token)
+        {
+            AuthResponseModel authResponseModel = await _authManager.VerifyEmailAsync(email, token);
+
+            if (authResponseModel.Succeeded)
+            {
+                _toastService.SuccessMessage("You've successfully verified your email.");
+
+                return View();
+            }
+
+            foreach (AuthErrorModel error in authResponseModel.Errors)
+            {
+                ModelState.AddModelError(error.Code, error.Message);
+            }
+
+            _toastService.FailureMessage("We unfortunately couldn't find your email.");
 
             return RedirectToAction(nameof(Login));
         }

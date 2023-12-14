@@ -16,7 +16,7 @@ namespace StudyTimer.MVC.Services
             _signInManager = signInManager;
         }
 
-        public async Task<AuthRegisterResponseModel> RegisterAsync(AuthViewModel authViewModel)
+        public async Task<AuthResponseModel> RegisterAsync(AuthViewModel authViewModel)
         {
             Guid userId = Guid.NewGuid();
             User user = new()
@@ -35,7 +35,7 @@ namespace StudyTimer.MVC.Services
 
 
 
-            return new AuthRegisterResponseModel
+            return new AuthResponseModel
             {
                 Succeeded = identityResult.Succeeded,
                 Errors = identityResult.Errors.Select(e => new AuthErrorModel()
@@ -44,6 +44,38 @@ namespace StudyTimer.MVC.Services
                     Message = e.Description
                 }),
                 userToken = HttpUtility.UrlEncode(await _userManager.GenerateEmailConfirmationTokenAsync(user))
+            };
+        }
+
+        public async Task<AuthResponseModel> VerifyEmailAsync(string email, string token)
+        {
+            User? user = await _userManager.FindByEmailAsync(email);
+
+            if (user is not null)
+            {
+                IdentityResult identityResult = await _userManager.ConfirmEmailAsync(user, token);
+
+                return new AuthResponseModel
+                {
+                    Succeeded = identityResult.Succeeded,
+                    Errors = identityResult.Errors.Select(e => new AuthErrorModel
+                    {
+                        Code = e.Code,
+                        Message = e.Description
+                    })
+                };
+            }
+            return new AuthResponseModel
+            {
+                Succeeded = false,
+                Errors = new List<AuthErrorModel>()
+                {
+                    new AuthErrorModel()
+                    {
+                        Code = "User Not Found",
+                        Message = "We unfortunately couldn't find your email."
+                    }
+                }
             };
         }
     }

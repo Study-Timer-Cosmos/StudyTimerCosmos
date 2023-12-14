@@ -1,6 +1,6 @@
 ﻿namespace StudyTimer.MVC.Models
 {
-    public class AuthRegisterResponseModel
+    public class AuthResponseModel
     {
         public bool Succeeded { get; set; }
         public IEnumerable<AuthErrorModel> Errors { get; set; }
