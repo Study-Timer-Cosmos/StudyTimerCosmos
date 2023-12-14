@@ -1,18 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StudyTimer.MVC.Models;
+using StudyTimer.MVC.Models.Home;
+using StudyTimer.MVC.Services;
 using System.Diagnostics;
 
 namespace StudyTimer.MVC.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly StudySessionManager _studySessionManager;
+        private readonly IToastService _toastService;
+
+        public HomeController(StudySessionManager studySessionManager, IToastService toastService)
+        {
+            _studySessionManager = studySessionManager;
+            _toastService = toastService;
+        }
 
         public IActionResult Index()
         {
-            return View(new HomeCreateStudySessionViewModel()
+            if (User.Identity.IsAuthenticated)
             {
-                TimeOptions = new List<SelectListItem>
+                return View(new HomeCreateStudySessionViewModel()
+                {
+                    TimeOptions = new List<SelectListItem>
         {
             new SelectListItem { Value = "1", Text = "1 minute" },
             new SelectListItem { Value = "5", Text = "5 minutes" },
@@ -20,7 +32,29 @@ namespace StudyTimer.MVC.Controllers
             new SelectListItem { Value = "15", Text = "15 minutes" },
             new SelectListItem { Value = "30", Text = "30 minutes" }
         }
-            });
+                });
+            }
+
+            return RedirectToAction("Login", "Auth");
+        }
+
+        [HttpPost]
+        public IActionResult CreateAsync(HomeCreateStudySessionViewModel viewModel)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                HomeCreateStudySessionResponseModel responseModel = _studySessionManager.Create(viewModel, User);
+
+                if (responseModel.Succeeded)
+                {
+                    _toastService.SuccessMessage("Success Create Study Sesssion");
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            _toastService.FailureMessage("Error");
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()

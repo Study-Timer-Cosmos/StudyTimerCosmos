@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StudyTimer.Domain.Identity;
-using StudyTimer.MVC.Models;
+using StudyTimer.MVC.Models.Auth;
 using StudyTimer.MVC.Services;
 
 namespace StudyTimer.MVC.Controllers

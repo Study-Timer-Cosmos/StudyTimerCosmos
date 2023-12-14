@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace StudyTimer.MVC.Models
+namespace StudyTimer.MVC.Models.Home
 {
     public class HomeCreateStudySessionViewModel
     {
