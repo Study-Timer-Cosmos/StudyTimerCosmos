@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Resend;
 using StudyTimer.Domain.Identity;
 using StudyTimer.Persistence.Contexts;
 
@@ -64,13 +65,22 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = new PathString("/Auth/AccessDenied");
 });
 
+var connectionStringResend = builder.Configuration.GetSection("Resend").Value;
+
+builder.Services.AddOptions();
+builder.Services.AddHttpClient<ResendClient>();
+builder.Services.Configure<ResendClientOptions>(o =>
+{
+    o.ApiToken = Environment.GetEnvironmentVariable("re_L8odUwat_7aPtnQLNGSjWV62JCuuXMfQj")!; //Dikkat Sil
+  //  o.ApiToken = Environment.GetEnvironmentVariable(connectionStringResend)!; 
+});
+builder.Services.AddTransient<IResend, ResendClient>();
+
+
+
 
 
 var app = builder.Build();
-
-
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
