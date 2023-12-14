@@ -1,10 +1,5 @@
 ﻿using StudyTimer.Domain.Common;
 using StudyTimer.Domain.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudyTimer.Domain.Entities
 {

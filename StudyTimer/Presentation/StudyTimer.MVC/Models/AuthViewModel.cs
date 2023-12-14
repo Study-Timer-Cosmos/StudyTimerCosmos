@@ -1,11 +1,5 @@
-﻿using StudyTimer.Domain.Entities;
-using StudyTimer.Domain.Enums;
-using System;
-using System.Collections.Generic;
+﻿using StudyTimer.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudyTimer.MVC.Models
 {
