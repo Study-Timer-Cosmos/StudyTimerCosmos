@@ -43,7 +43,7 @@ namespace StudyTimer.MVC.Services
                     Code = e.Code,
                     Message = e.Description
                 }),
-                userToken = HttpUtility.UrlEncode(await _userManager.GenerateEmailConfirmationTokenAsync(user))
+                UserToken = HttpUtility.UrlEncode(await _userManager.GenerateEmailConfirmationTokenAsync(user))
             };
         }
 
@@ -76,6 +76,38 @@ namespace StudyTimer.MVC.Services
                         Message = "We unfortunately couldn't find your email."
                     }
                 }
+            };
+        }
+
+        public async Task<AuthResponseModel> LoginAsync(AuthLoginViewModel authLoginViewModel)
+        {
+            User? user = await _userManager.FindByEmailAsync(authLoginViewModel.Email);
+
+            if (user is not null)
+            {
+                SignInResult loginResult = await _signInManager.PasswordSignInAsync(user, authLoginViewModel.Password, true, false);
+
+                if (loginResult.Succeeded)
+                {
+                    return new()
+                    {
+                        Succeeded = true,
+                        Username = user.UserName
+                    };
+                }
+            }
+
+            return new AuthResponseModel
+            {
+                Succeeded = false,
+                Errors = new List<AuthErrorModel>()
+                    {
+                        new AuthErrorModel()
+                        {
+                            Code = "Email Or Password Incorrect",
+                            Message = "Your email or password is incorrect."
+                        }
+                    }
             };
         }
     }

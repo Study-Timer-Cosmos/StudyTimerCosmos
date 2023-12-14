@@ -103,7 +103,7 @@ namespace StudyTimer.MVC.Controllers
 
             //await _emailService.PrepareAndSendVerifyEmail(authRegisterResponseModel.userToken, registerViewModel.Email);
 
-            Console.WriteLine($"Verify Link: https://localhost:7154/Auth/VerifyEmail?email={registerViewModel.Email}&token={authRegisterResponseModel.userToken}");
+            Console.WriteLine($"Verify Link: https://localhost:7154/Auth/VerifyEmail?email={registerViewModel.Email}&token={authRegisterResponseModel.UserToken}");
 
             _toastService.SuccessMessage("You've successfully registered to the application.");
 
