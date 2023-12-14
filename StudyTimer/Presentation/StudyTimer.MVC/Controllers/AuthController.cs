@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using StudyTimer.Application.Models;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models;
 using NToastNotify;
@@ -11,23 +10,15 @@ namespace StudyTimer.MVC.Controllers
     public class AuthController : Controller
     {
         private readonly UserManager<User> _userManager;
-
         private readonly SignInManager<User> _signInManager;
-
         private readonly IToastNotification _toastNotification;
 
-        private readonly IWebHostEnvironment _environment;
-
-        private readonly IResend _resend;
-
         public AuthController(UserManager<User> userManager, SignInManager<User> signInManager,
-            IWebHostEnvironment environment, IToastNotification toast,IResend resend)
+           IToastNotification toast)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _environment = environment;
             _toastNotification = toast;
-            _resend = resend;
         }
 
         [HttpGet]

@@ -2,12 +2,6 @@
 using StudyTimer.Domain.Common;
 using StudyTimer.Domain.Entities;
 using StudyTimer.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudyTimer.Domain.Identity
 {
