@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models;
 using System.Web;

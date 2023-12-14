@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using StudyTimer.MVC.Models;
 using System.Diagnostics;
 
@@ -6,16 +7,20 @@ namespace StudyTimer.MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
 
         public IActionResult Index()
         {
-            return View();
+            return View(new HomeCreateStudySessionViewModel()
+            {
+                TimeOptions = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "1", Text = "1 minute" },
+            new SelectListItem { Value = "5", Text = "5 minutes" },
+            new SelectListItem { Value = "10", Text = "10 minutes" },
+            new SelectListItem { Value = "15", Text = "15 minutes" },
+            new SelectListItem { Value = "30", Text = "30 minutes" }
+        }
+            });
         }
 
         public IActionResult Privacy()
