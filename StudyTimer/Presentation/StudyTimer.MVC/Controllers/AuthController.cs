@@ -4,6 +4,7 @@ using StudyTimer.Application.Models;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models;
 using NToastNotify;
+using Resend;
 
 namespace StudyTimer.MVC.Controllers
 {
@@ -14,16 +15,19 @@ namespace StudyTimer.MVC.Controllers
         private readonly SignInManager<User> _signInManager;
 
         private readonly IToastNotification _toastNotification;
-        //private readonly IResend _resend;
+
         private readonly IWebHostEnvironment _environment;
 
+        private readonly IResend _resend;
+
         public AuthController(UserManager<User> userManager, SignInManager<User> signInManager,
-            IWebHostEnvironment environment, IToastNotification toast)
+            IWebHostEnvironment environment, IToastNotification toast,IResend resend)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _environment = environment;
             _toastNotification = toast;
+            _resend = resend;
         }
 
         [HttpGet]
@@ -80,10 +84,10 @@ namespace StudyTimer.MVC.Controllers
 
             _toastNotification.AddSuccessToastMessage($"Welcome {user.UserName}!");
 
+            await MailSend();
+
             return RedirectToAction("Index", controllerName: "Home");
         }
-    
-
 
         [HttpPost]
         public async Task<IActionResult> RegisterAsync(AuthViewModel registerViewModel)
@@ -127,7 +131,20 @@ namespace StudyTimer.MVC.Controllers
             return RedirectToAction("Login");
         }
 
+        public async Task<IActionResult> MailSend()
+        {
+            var message = new EmailMessage();
+            message.From = "onboarding@resend.dev";
+            message.To.Add("seyyitahmet.kilic@gmail.com");
+            message.Subject = "Hello!";
+            message.HtmlBody = "<div><strong>Greetings<strong> 👋🏻 from .NET</div>";
 
+            await _resend.EmailSendAsync(message);
+            return RedirectToAction("Register");
+        }
     }
+
+
 }
+
 
