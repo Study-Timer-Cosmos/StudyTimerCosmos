@@ -24,6 +24,44 @@ namespace StudyTimer.MVC.Controllers
             _toastService = toastService;
         }
 
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var loginViewModel = new AuthLoginViewModel();
+
+            return View(loginViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoginAsync(AuthLoginViewModel loginViewModel)
+        {
+            if (!ModelState.IsValid)
+                return View(loginViewModel);
+
+            AuthResponseModel authRegisterResponseModel = await _authManager.LoginAsync(loginViewModel);
+
+            if (!authRegisterResponseModel.Succeeded)
+            {
+                _toastService.FailureMessage("Your email or password is incorrect.");
+
+                foreach (var error in authRegisterResponseModel.Errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Message);
+                }
+
+                //ViewData["Errors"] = authResponse.Errors.Select(error => error.Message).ToList();
+                return View(loginViewModel);
+            }
+            _toastService.SuccessMessage("You've successfully login to the application.");
+
+            return RedirectToAction("Index", controllerName: "Home");
+        }
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -36,51 +74,6 @@ namespace StudyTimer.MVC.Controllers
 
 
             return View(registerViewModel);
-        }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            var loginViewModel = new AuthLoginViewModel();
-
-            return View(loginViewModel);
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> LoginAsync(AuthLoginViewModel loginViewModel)
-        {
-            if (!ModelState.IsValid)
-                return View(loginViewModel);
-
-            var user = await _userManager.FindByEmailAsync(loginViewModel.Email);
-
-            if (user is null)
-            {
-                //_toastNotification.AddErrorToastMessage("Your email or password is incorrect.");
-
-                return View(loginViewModel);
-            }
-
-            var loginResult = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, true, false);
-
-            if (!loginResult.Succeeded)
-            {
-                //_toastNotification.AddErrorToastMessage("Your email or password is incorrect.");
-
-                return View(loginViewModel);
-            }
-
-            //_toastNotification.AddSuccessToastMessage($"Welcome {user.UserName}!");
-
-            await MailSend();
-
-            return RedirectToAction("Index", controllerName: "Home");
         }
 
         [HttpPost]
@@ -134,11 +127,11 @@ namespace StudyTimer.MVC.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _authManager.Logout();
             return RedirectToAction("Login");
         }
 
-        public async Task<IActionResult> MailSend()
+        public async Task<IActionResult> MailSendTest()
         {
             /*var message = new EmailMessage();
             message.From = "onboarding@resend.dev";

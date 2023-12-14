@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models;
 using System.Web;
@@ -85,7 +86,8 @@ namespace StudyTimer.MVC.Services
 
             if (user is not null)
             {
-                SignInResult loginResult = await _signInManager.PasswordSignInAsync(user, authLoginViewModel.Password, true, false);
+                Microsoft.AspNetCore.Identity.SignInResult loginResult = await _signInManager.PasswordSignInAsync(user, authLoginViewModel.Password, true, false);
+                //dikkat Microsoft.AspNetCore.Identity ekledim.
 
                 if (loginResult.Succeeded)
                 {
@@ -110,5 +112,11 @@ namespace StudyTimer.MVC.Services
                     }
             };
         }
+
+        public async Task Logout()
+        {
+            await _signInManager.SignOutAsync();
+        }
+
     }
 }
