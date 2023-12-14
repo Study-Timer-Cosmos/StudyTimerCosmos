@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Resend;
 using StudyTimer.Domain.Identity;
+using StudyTimer.MVC.Services;
 using StudyTimer.Persistence.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -71,12 +72,14 @@ builder.Services.AddOptions();
 builder.Services.AddHttpClient<ResendClient>();
 builder.Services.Configure<ResendClientOptions>(o =>
 {
-    o.ApiToken = Environment.GetEnvironmentVariable("re_L8odUwat_7aPtnQLNGSjWV62JCuuXMfQj")!; //Dikkat Sil
-  //  o.ApiToken = Environment.GetEnvironmentVariable(connectionStringResend)!; 
+    //o.ApiToken = Environment.GetEnvironmentVariable("re_L8odUwat_7aPtnQLNGSjWV62JCuuXMfQj")!; //Dikkat Sil
+    o.ApiToken = Environment.GetEnvironmentVariable(connectionStringResend)!;
 });
 builder.Services.AddTransient<IResend, ResendClient>();
 
-
+builder.Services.AddScoped<AuthManager>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IToastService, ToastService>();
 
 
 

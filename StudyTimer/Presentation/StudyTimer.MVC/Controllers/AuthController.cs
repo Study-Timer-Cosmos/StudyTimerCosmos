@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models;
-using NToastNotify;
-using Resend;
+using StudyTimer.MVC.Services;
 
 namespace StudyTimer.MVC.Controllers
 {
@@ -11,23 +10,27 @@ namespace StudyTimer.MVC.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IToastNotification _toastNotification;
+        private readonly IToastService _toastService;
+        private readonly AuthManager _authManager;
+        private readonly IEmailService _emailService;
 
         public AuthController(UserManager<User> userManager, SignInManager<User> signInManager,
-           IToastNotification toast)
+          AuthManager authManager, IEmailService emailService, IToastService toastService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _toastNotification = toast;
+            _authManager = authManager;
+            _emailService = emailService;
+            _toastService = toastService;
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-            //if (User.Identity.IsAuthenticated)
-            //{
-            //    return RedirectToAction(nameof(Index), "Home");
-            //}
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction(nameof(Index), "Home");
+            }
 
             var registerViewModel = new AuthViewModel();
 
@@ -59,7 +62,7 @@ namespace StudyTimer.MVC.Controllers
 
             if (user is null)
             {
-                _toastNotification.AddErrorToastMessage("Your email or password is incorrect.");
+                //_toastNotification.AddErrorToastMessage("Your email or password is incorrect.");
 
                 return View(loginViewModel);
             }
@@ -68,12 +71,12 @@ namespace StudyTimer.MVC.Controllers
 
             if (!loginResult.Succeeded)
             {
-                _toastNotification.AddErrorToastMessage("Your email or password is incorrect.");
+                //_toastNotification.AddErrorToastMessage("Your email or password is incorrect.");
 
                 return View(loginViewModel);
             }
 
-            _toastNotification.AddSuccessToastMessage($"Welcome {user.UserName}!");
+            //_toastNotification.AddSuccessToastMessage($"Welcome {user.UserName}!");
 
             await MailSend();
 
@@ -86,34 +89,25 @@ namespace StudyTimer.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(registerViewModel);
 
-            var userId = Guid.NewGuid();
+            AuthRegisterResponseModel authRegisterResponseModel = await _authManager.RegisterAsync(registerViewModel);
 
-            var user = new User()
+            if (!authRegisterResponseModel.Succeeded)
             {
-                Id = userId,
-                Email = registerViewModel.Email,
-                FirstName = registerViewModel.FirstName,
-                LastName = registerViewModel.LastName,
-                Gender = registerViewModel.Gender,
-                BirthDate = registerViewModel.BirthDate.Value.ToUniversalTime(),
-                UserName = registerViewModel.UserName,
-                CreatedOn = DateTime.UtcNow,
-                CreatedByUserId = userId.ToString()
-            };
-
-            var identityResult = await _userManager.CreateAsync(user, registerViewModel.Password);
-
-            if (!identityResult.Succeeded)
-            {
-                foreach (var error in identityResult.Errors)
+                foreach (var error in authRegisterResponseModel.Errors)
                 {
-                    ModelState.AddModelError(error.Code, error.Description);
+                    ModelState.AddModelError(error.Code, error.Message);
                 }
 
                 return View(registerViewModel);
             }
 
-           return RedirectToAction("Index", controllerName: "Home");
+            //await _emailService.PrepareAndSendVerifyEmail(authRegisterResponseModel.userToken, registerViewModel.Email);
+
+            Console.WriteLine($"Verify Link: https://localhost:7154/Auth/VerifyEmail?email={registerViewModel.Email}&token={authRegisterResponseModel.userToken}");
+
+            _toastService.SuccessMessage("You've successfully registered to the application.");
+
+            return RedirectToAction(nameof(Login));
         }
 
         public async Task<IActionResult> Logout()
@@ -124,14 +118,15 @@ namespace StudyTimer.MVC.Controllers
 
         public async Task<IActionResult> MailSend()
         {
-            var message = new EmailMessage();
+            /*var message = new EmailMessage();
             message.From = "onboarding@resend.dev";
             message.To.Add("seyyitahmet.kilic@gmail.com");
             message.Subject = "Hello!";
             message.HtmlBody = "<div><strong>Greetings<strong> 👋🏻 from .NET</div>";
 
-            await _resend.EmailSendAsync(message);
-            return RedirectToAction("Register");
+            // await _resend.EmailSendAsync(message);
+            return RedirectToAction("Register");*/
+            return Ok();
         }
     }
 
