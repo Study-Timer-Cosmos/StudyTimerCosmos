@@ -48,15 +48,24 @@ namespace StudyTimer.MVC.Controllers
 
                 if (responseModel.Succeeded)
                 {
+                    var model = viewModel;
                     _toastService.SuccessMessage("Success Create Study Sesssion");
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("StudySession", model);
                 }
             }
-            var model = viewModel;
+            
             _toastService.FailureMessage("Error");
 
-            return RedirectToAction("StudySession",model);
+            return RedirectToAction(nameof(Index));
         }
+
+
+        [HttpGet]
+        public IActionResult StudySession(HomeCreateStudySessionViewModel model)
+        {
+            return View(model);
+        }
+
 
         public IActionResult Privacy()
         {
@@ -69,17 +78,9 @@ namespace StudyTimer.MVC.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpGet]
-        public IActionResult StudySession()
-        {
-            return View();
-        }
+     
 
-        [HttpPost]
-        public IActionResult StudySession(HomeCreateStudySessionViewModel model)
-        {
-            return View(model);
-        }
+        
 
 
 
