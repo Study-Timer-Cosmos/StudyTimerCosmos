@@ -7,7 +7,7 @@
 
     <script>
         // Geri sayım süresi (saniye cinsinden)
-        var countdownTime = @Model.SelectedTime; // Örnekte 5 dakika (5 * 60 saniye)
+        var countdownTime = @Model.SelectedTime*60; // Örnekte 5 dakika (5 * 60 saniye)
         var countdownInterval; // Interval değişkeni
 
         function startCountdown() {
@@ -46,5 +46,5 @@
         window.onload = startCountdown;
     </script>
 
-</body>
-</html>
+
+
