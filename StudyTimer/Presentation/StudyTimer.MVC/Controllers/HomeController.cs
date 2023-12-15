@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StudyTimer.MVC.Models;
+using StudyTimer.MVC.Models.Auth;
 using StudyTimer.MVC.Models.Home;
 using StudyTimer.MVC.Services;
 using System.Diagnostics;
@@ -51,10 +52,10 @@ namespace StudyTimer.MVC.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-
+            var model = viewModel;
             _toastService.FailureMessage("Error");
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("StudySession",model);
         }
 
         public IActionResult Privacy()
@@ -67,5 +68,20 @@ namespace StudyTimer.MVC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpGet]
+        public IActionResult StudySession()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult StudySession(HomeCreateStudySessionViewModel model)
+        {
+            return View(model);
+        }
+
+
+
     }
 }
