@@ -47,9 +47,16 @@ namespace StudyTimer.MVC.Services
                                 Name = model.CategoryName,
                                 Description = model.CategoryDescription,
                                 DutyId = dutyId,
+                                CreatedByUserId = _userManager.GetUserId(user),
+                                CreatedOn = DateTime.UtcNow
+
                             }
-                        }
+                        },
+                        CreatedByUserId = _userManager.GetUserId(user),
+                        CreatedOn = DateTime.UtcNow
                     }
+                    
+
                 },
                 CreatedByUserId = _userManager.GetUserId(user),
                 CreatedOn = DateTime.UtcNow
@@ -67,6 +74,7 @@ namespace StudyTimer.MVC.Services
                     StudySessionId= studySession.Id,
                     CreatedByUserId= userId,
                     CreatedOn = DateTime.UtcNow,
+                    IsDeleted= false,
 
 
                 }
