@@ -1,16 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using StudyTimer.Domain.Entities;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models;
-using StudyTimer.MVC.Models.Auth;
 using StudyTimer.MVC.Models.Home;
 using StudyTimer.MVC.Services;
-using StudyTimer.Persistence.Contexts;
 using System.Diagnostics;
-using System.Security.Claims;
 
 namespace StudyTimer.MVC.Controllers
 {
@@ -18,15 +13,11 @@ namespace StudyTimer.MVC.Controllers
     {
         private readonly StudySessionManager _studySessionManager;
         private readonly IToastService _toastService;
-        private readonly StudyTimerDbContext _context;
-        private readonly UserManager<User> _userManager;
 
-        public HomeController(StudySessionManager studySessionManager, IToastService toastService, StudyTimerDbContext context, UserManager<User> userManager)
+        public HomeController(StudySessionManager studySessionManager, IToastService toastService)
         {
             _studySessionManager = studySessionManager;
             _toastService = toastService;
-            _context = context;
-            _userManager = userManager;
         }
 
         public IActionResult Index()
