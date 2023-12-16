@@ -1,6 +1,8 @@
-﻿namespace StudyTimer.Domain.Entities
+﻿using StudyTimer.Domain.Common;
+
+namespace StudyTimer.Domain.Entities
 {
-    public class Duty : IEntityBase<Guid>
+    public class Duty : EntityBase<Guid>
     {
         public Guid Id { get; set; }
         public string Topic { get; set; }
