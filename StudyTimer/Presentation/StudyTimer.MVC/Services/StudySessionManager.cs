@@ -22,9 +22,9 @@ namespace StudyTimer.MVC.Services
         {
 
             DateTimeOffset now = DateTimeOffset.UtcNow;
-
             Guid id = Guid.NewGuid();
             Guid dutyId = Guid.NewGuid();
+
             StudySession studySession = new()
             {
                 Id = id,
@@ -75,8 +75,6 @@ namespace StudyTimer.MVC.Services
                     CreatedByUserId= userId,
                     CreatedOn = DateTime.UtcNow,
                     IsDeleted= false,
-
-
                 }
 
             };
@@ -156,13 +154,6 @@ namespace StudyTimer.MVC.Services
                 TotalIncompleteDuties = incompletedDutiesCount,
                 LastStudySessionDate = DateTime.Now,
 
-
-
-                //public string MostStudiedCategory { get; set; }
-                //public int TotalCompletedDuties { get; set; }
-                //public int TotalIncompleteDuties { get; set; }
-                //public DateTimeOffset LastStudySessionDate { get; set; }
-
             };
             return viewModel;
         }
@@ -178,9 +169,25 @@ namespace StudyTimer.MVC.Services
             List<Category> categories = new();
             foreach (Duty duty in duties)
             {
-                categories.AddRange(_context.Categories.Where(x => x.DutyId == duty.Id).ToList());
+                categories.AddRange(_context.Categories.Where(x => x.DutyId == duty.Id).ToList()
+);
             }
+
             return categories;
         }
+
+        public Category GetCategoryById(string id)
+        {
+            List<Category> categoryList = _context.Categories.ToList();
+            foreach (Category category in categoryList)
+            {
+                if(category.Id == Guid.Parse(id))
+                {
+                    return category;
+                }
+            }
+            return null;
+        }
+
     }
 }
