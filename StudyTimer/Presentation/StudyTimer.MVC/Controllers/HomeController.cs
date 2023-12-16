@@ -95,6 +95,7 @@ namespace StudyTimer.MVC.Controllers
             return View();
                 
         }
+
         //public IActionResult Statistics(ClaimsPrincipal user)
         //{
         //    var userId = _userManager.GetUserId(user);
@@ -146,7 +147,5 @@ namespace StudyTimer.MVC.Controllers
         //    return View(viewModel);
 
        // }
-        
-
     }
 }

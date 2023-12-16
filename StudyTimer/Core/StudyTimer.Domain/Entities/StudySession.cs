@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudyTimer.Domain.Entities
 {
-    public class StudySession : IEntityBase<Guid>, ICreatedOn, IDeletedOn, IModifiedOn
+    public class StudySession : EntityBase<Guid>
     {
         public Guid Id { get; set; }
         public DateTimeOffset StartTime { get; set; }
