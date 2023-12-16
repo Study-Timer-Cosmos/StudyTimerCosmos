@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StudyTimer.Domain.Identity;
-using StudyTimer.MVC.Models;
+using StudyTimer.MVC.Models.Auth;
 using StudyTimer.MVC.Services;
 
 namespace StudyTimer.MVC.Controllers
@@ -96,7 +96,8 @@ namespace StudyTimer.MVC.Controllers
 
             //await _emailService.PrepareAndSendVerifyEmail(authRegisterResponseModel.userToken, registerViewModel.Email);
 
-            Console.WriteLine($"Verify Link: https://localhost:7154/Auth/VerifyEmail?email={registerViewModel.Email}&token={authRegisterResponseModel.UserToken}");
+            string port = "7154";
+            Console.WriteLine($"Verify Link: https://localhost:{port}/Auth/VerifyEmail?email={registerViewModel.Email}&token={authRegisterResponseModel.UserToken}");
 
             _toastService.SuccessMessage("You've successfully registered to the application.");
 
@@ -130,22 +131,7 @@ namespace StudyTimer.MVC.Controllers
             await _authManager.Logout();
             return RedirectToAction("Login");
         }
-
-        public async Task<IActionResult> MailSendTest()
-        {
-            /*var message = new EmailMessage();
-            message.From = "onboarding@resend.dev";
-            message.To.Add("seyyitahmet.kilic@gmail.com");
-            message.Subject = "Hello!";
-            message.HtmlBody = "<div><strong>Greetings<strong> 👋🏻 from .NET</div>";
-
-            // await _resend.EmailSendAsync(message);
-            return RedirectToAction("Register");*/
-            return Ok();
-        }
     }
-
-
 }
 
 

@@ -1,4 +1,4 @@
-﻿namespace StudyTimer.MVC.Models
+﻿namespace StudyTimer.MVC.Models.Auth
 {
     public class AuthResponseModel
     {

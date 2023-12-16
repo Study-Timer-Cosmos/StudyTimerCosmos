@@ -81,6 +81,7 @@ builder.Services.AddTransient<IResend, ResendClient>();
 builder.Services.AddScoped<AuthManager>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IToastService, ToastService>();
+builder.Services.AddScoped<StudySessionManager>();
 
 
 

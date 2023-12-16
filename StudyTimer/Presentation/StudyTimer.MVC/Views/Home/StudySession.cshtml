@@ -1,0 +1,50 @@
+﻿@using StudyTimer.MVC.Models.Home;
+@model HomeCreateStudySessionViewModel
+
+    <div id="countdown"></div>
+    <button onclick="startCountdown()">Başlat</button>
+    <button onclick="stopCountdown()">Durdur</button>
+
+    <script>
+        // Geri sayım süresi (saniye cinsinden)
+        var countdownTime = @Model.SelectedTime*60; // Örnekte 5 dakika (5 * 60 saniye)
+        var countdownInterval; // Interval değişkeni
+
+        function startCountdown() {
+          var countdownElement = document.getElementById('countdown');
+
+          // Başlatılmış bir geri sayım varsa önce durdur
+          if (countdownInterval) {
+            clearInterval(countdownInterval);
+          }
+
+          countdownInterval = setInterval(function() {
+            var minutes = Math.floor(countdownTime / 60);
+            var seconds = countdownTime % 60;
+
+            // Zamanı HTML elementine yerleştirme
+            countdownElement.innerHTML = minutes + ' dk ' + seconds + ' sn';
+
+            // Zamanı azaltma
+            countdownTime--;
+
+            // Zaman bittiğinde interval'i temizleme
+            if (countdownTime < 0) {
+              clearInterval(countdownInterval);
+              countdownElement.innerHTML = 'Süre doldu!';
+            }
+          }, 1000); // Her 1 saniyede bir güncelleme
+        }
+
+        function stopCountdown() {
+          clearInterval(countdownInterval);
+          var countdownElement = document.getElementById('countdown');
+          countdownElement.innerHTML = 'Geri sayım durduruldu.';
+        }
+
+        // Sayfa yüklendiğinde geri sayımı başlat
+        window.onload = startCountdown;
+    </script>
+
+
+
