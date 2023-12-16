@@ -35,8 +35,8 @@ namespace StudyTimer.Persistence.Migrations
                     LastName = table.Column<string>(type: "character varying(70)", maxLength: 70, nullable: false),
                     Gender = table.Column<int>(type: "integer", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CreatedByUserId = table.Column<string>(type: "text", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", maxLength: 75, nullable: false),
+                    CreatedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     ModifiedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -193,7 +193,14 @@ namespace StudyTimer.Persistence.Migrations
                     Topic = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     isFinished = table.Column<bool>(type: "boolean", nullable: false),
                     TaskTime = table.Column<TimeSpan>(type: "interval", nullable: false),
-                    SessionId = table.Column<Guid>(type: "uuid", nullable: false)
+                    SessionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifiedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    DeletedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
+                    DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -213,7 +220,13 @@ namespace StudyTimer.Persistence.Migrations
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     StudySessionId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ModifiedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    DeletedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
+                    DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -239,7 +252,14 @@ namespace StudyTimer.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(65)", maxLength: 65, nullable: false),
                     Description = table.Column<string>(type: "character varying(80)", maxLength: 80, nullable: false),
-                    DutyId = table.Column<Guid>(type: "uuid", nullable: false)
+                    DutyId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifiedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    DeletedByUserId = table.Column<string>(type: "character varying(75)", maxLength: 75, nullable: true),
+                    DeletedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
