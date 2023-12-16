@@ -166,5 +166,21 @@ namespace StudyTimer.MVC.Services
             };
             return viewModel;
         }
+
+        public List<Category> GetUserCategories(ClaimsPrincipal user)
+        {
+            List<UserStudySession> userStudySessions = _context.UserStudySessions.Where(x => x.UserId == Guid.Parse(_userManager.GetUserId(user))).ToList();
+            List<Duty> duties = new();
+            foreach (UserStudySession userStudySession in userStudySessions)
+            {
+                duties.AddRange(_context.Duties.Where(x => x.SessionId == userStudySession.StudySessionId).ToList());
+            }
+            List<Category> categories = new();
+            foreach (Duty duty in duties)
+            {
+                categories.AddRange(_context.Categories.Where(x => x.DutyId == duty.Id).ToList());
+            }
+            return categories;
+        }
     }
 }
