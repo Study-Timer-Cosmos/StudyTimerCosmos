@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using StudyTimer.Domain.Entities;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models;
 using StudyTimer.MVC.Models.Home;
@@ -38,7 +39,12 @@ namespace StudyTimer.MVC.Controllers
             new SelectListItem { Value = "10", Text = "10 minutes" },
             new SelectListItem { Value = "15", Text = "15 minutes" },
             new SelectListItem { Value = "30", Text = "30 minutes" }
-        }
+        },
+                    Categories = _studySessionManager.GetUserCategories(User).ConvertAll(new Converter<Category, SelectListItem>(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    }))
                 });
             }
 
@@ -59,7 +65,7 @@ namespace StudyTimer.MVC.Controllers
                     return RedirectToAction("StudySession", model);
                 }
             }
-            
+
             _toastService.FailureMessage("Error");
 
             return RedirectToAction(nameof(Index));
@@ -93,7 +99,7 @@ namespace StudyTimer.MVC.Controllers
                 return View(model);
             }
             return View();
-                
+
         }
 
         //public IActionResult Statistics(ClaimsPrincipal user)
@@ -146,6 +152,6 @@ namespace StudyTimer.MVC.Controllers
         //    };
         //    return View(viewModel);
 
-       // }
+        // }
     }
 }

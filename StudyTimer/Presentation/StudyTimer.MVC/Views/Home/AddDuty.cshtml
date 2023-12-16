@@ -11,13 +11,22 @@
                     <div class="invalid-feedback">Topic is required.</div>
                 </div>
                 <div class="form-group">
+                    <label for="category-select">Select Category:</label>
+                    <select id="category-select" name="SelectedCategoryId">
+                        @foreach (var option in Model.Categories)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="CategoryName">Category Name</label>
-                    <input asp-for="CategoryName" type="text" class="form-control" id="CategoryName" required minlength="2">
+                    <input asp-for="CategoryName" type="text" class="form-control" id="CategoryName" minlength="2">
                     <div class="invalid-feedback">Category Name is required and must be at least 2 characters long.</div>
                 </div>
                 <div class="form-group">
                     <label for="CategoryDescription">Category Description</label>
-                    <input asp-for="CategoryDescription" type="text" class="form-control" id="CategoryDescription" required minlength="6">
+                    <input asp-for="CategoryDescription" type="text" class="form-control" id="CategoryDescription" minlength="6">
                     <div class="invalid-feedback">Category Description is required and must be at least 6 characters long.</div>
                 </div>
                 <br />
@@ -29,7 +38,7 @@
                             <option value="@option.Value">@option.Text</option>
                         }
                     </select>
-                    <div class="invalid-feedback">Gender is required.</div>
+                    <div class="invalid-feedback">Time is required.</div>
                 </div>
                 <br />
                 <button type="submit" class="btn btn-primary">Create Study Session</button>
