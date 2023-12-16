@@ -11,6 +11,8 @@ namespace StudyTimer.Persistence.Contexts
         public DbSet<Category> Categories { get; set; }
         public DbSet<Duty> Duties { get; set; }
         public DbSet<StudySession> StudySessions { get; set; }
+        public DbSet<UserStudySession> UserStudySessions { get; set; }
+        
 
 
         public StudyTimerDbContext(DbContextOptions<StudyTimerDbContext> dbContextOptions) : base(dbContextOptions)
