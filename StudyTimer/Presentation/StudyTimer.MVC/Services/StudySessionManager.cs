@@ -45,6 +45,8 @@ namespace StudyTimer.MVC.Services
                 model.CategoryId = category.Id;
             }
             StudySession studySession;
+            String userId = _userManager.GetUserId(user);
+            DateTime dateTimeNow = DateTime.UtcNow;
             if (model.CategoryId is null)
             {
 
@@ -70,19 +72,19 @@ namespace StudyTimer.MVC.Services
                                 Name = model.CategoryName,
                                 Description = model.CategoryDescription,
                                 DutyId = dutyId,
-                                CreatedByUserId = _userManager.GetUserId(user),
-                                CreatedOn = DateTime.UtcNow
+                                CreatedByUserId = userId,
+                                CreatedOn = dateTimeNow
 
                             }
                         },
-                        CreatedByUserId = _userManager.GetUserId(user),
-                        CreatedOn = DateTime.UtcNow
+                        CreatedByUserId = userId,
+                        CreatedOn = dateTimeNow
                     }
 
 
                 },
-                    CreatedByUserId = _userManager.GetUserId(user),
-                    CreatedOn = DateTime.UtcNow
+                    CreatedByUserId = userId,
+                    CreatedOn = dateTimeNow
                 };
             }
             else
@@ -106,18 +108,17 @@ namespace StudyTimer.MVC.Services
                         {
                            category
                         },
-                        CreatedByUserId = _userManager.GetUserId(user),
-                        CreatedOn = DateTime.UtcNow
+                        CreatedByUserId = userId,
+                        CreatedOn = dateTimeNow
                     }
 
 
                 },
-                    CreatedByUserId = _userManager.GetUserId(user),
-                    CreatedOn = DateTime.UtcNow
+                    CreatedByUserId = userId,
+                    CreatedOn = dateTimeNow
                 };
             }
-            _context.StudySessions.Add(studySession);
-            var userId = _userManager.GetUserId(user);
+            _studySessionWriteRepository.Add(studySession);
             User currentUser = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));
             if (currentUser.Sessions is null)
             {
@@ -128,7 +129,7 @@ namespace StudyTimer.MVC.Services
                     UserId=Guid.Parse(userId),
                     StudySessionId= studySession.Id,
                     CreatedByUserId= userId,
-                    CreatedOn = DateTime.UtcNow,
+                    CreatedOn = dateTimeNow,
                     IsDeleted= false,
                 }
 
@@ -142,7 +143,7 @@ namespace StudyTimer.MVC.Services
                     UserId = Guid.Parse(userId),
                     StudySessionId = studySession.Id,
                     CreatedByUserId = userId,
-                    CreatedOn = DateTime.UtcNow,
+                    CreatedOn = dateTimeNow,
 
 
                 });
@@ -151,7 +152,7 @@ namespace StudyTimer.MVC.Services
 
 
 
-            _context.SaveChanges();
+            _studySessionWriteRepository.SaveChanges();
 
             return new()
             {
