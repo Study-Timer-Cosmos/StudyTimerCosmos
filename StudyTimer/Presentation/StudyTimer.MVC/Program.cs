@@ -4,6 +4,7 @@ using Resend;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Services;
 using StudyTimer.Persistence.Contexts;
+using StudyTimer.Persistence.Repositories.StudySessionRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services
@@ -83,7 +84,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IToastService, ToastService>();
 builder.Services.AddScoped<StudySessionManager>();
 
-
+builder.Services.AddScoped<StudySessionReadRepository>();
 
 var app = builder.Build();
 

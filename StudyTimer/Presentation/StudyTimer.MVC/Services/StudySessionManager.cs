@@ -3,6 +3,7 @@ using StudyTimer.Domain.Entities;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models.Home;
 using StudyTimer.Persistence.Contexts;
+using StudyTimer.Persistence.Repositories.StudySessionRepositories;
 using System.Security.Claims;
 
 namespace StudyTimer.MVC.Services
@@ -11,11 +12,13 @@ namespace StudyTimer.MVC.Services
     {
         private readonly StudyTimerDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly StudySessionReadRepository _studySessionReadRepository;
 
-        public StudySessionManager(StudyTimerDbContext context, UserManager<User> userManager)
+        public StudySessionManager(StudyTimerDbContext context, UserManager<User> userManager, StudySessionReadRepository studySessionReadRepository)
         {
             _context = context;
             _userManager = userManager;
+            _studySessionReadRepository = studySessionReadRepository;
         }
 
         public HomeCreateStudySessionResponseModel Create(HomeCreateStudySessionViewModel model, ClaimsPrincipal user)
@@ -57,16 +60,16 @@ namespace StudyTimer.MVC.Services
                         CreatedByUserId = userId,
                         CreatedOn = DateTime.UtcNow
                     }
-                    
+
 
                 },
                 CreatedByUserId = userId,
                 CreatedOn = DateTime.UtcNow
             };
             _context.StudySessions.Add(studySession);
-            if(currentUser.Sessions is null)
+            if (currentUser.Sessions is null)
             {
-            currentUser.Sessions = new List<UserStudySession>()
+                currentUser.Sessions = new List<UserStudySession>()
                 {
                  new()
                 {
@@ -92,7 +95,7 @@ namespace StudyTimer.MVC.Services
 
                 });
             }
-            
+
 
 
 
@@ -120,21 +123,20 @@ namespace StudyTimer.MVC.Services
 
             foreach (var session in sessions)
             {
-                StudySession studySession = _context.StudySessions
-                    .FirstOrDefault(x => x.Id == session.StudySessionId);
+                StudySession studySession = _studySessionReadRepository.GetById(session.StudySessionId);
                 TimeSpan time = (studySession.EndTime - studySession.StartTime);
                 totalTime += time;
             }
 
             List<Duty> allDuties = new List<Duty>();
-            int completedDutiesCount =0;
+            int completedDutiesCount = 0;
             foreach (var userSession in sessions)
             {
                 StudySession studySession = userSession.StudySession;
                 List<Duty> sessionDuties = _context.Duties.Where(x => x.SessionId == studySession.Id).ToList();
                 allDuties.AddRange(sessionDuties);
             }
-            completedDutiesCount = allDuties.Where(x=>x.isFinished).Count();
+            completedDutiesCount = allDuties.Where(x => x.isFinished).Count();
             int incompletedDutiesCount = allDuties.Count() - completedDutiesCount;
 
 
