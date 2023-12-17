@@ -24,6 +24,8 @@ namespace StudyTimer.MVC.Services
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid id = Guid.NewGuid();
             Guid dutyId = Guid.NewGuid();
+            var userId = _userManager.GetUserId(user);
+            User currentUser = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));
 
             StudySession studySession = new()
             {
@@ -47,23 +49,21 @@ namespace StudyTimer.MVC.Services
                                 Name = model.CategoryName,
                                 Description = model.CategoryDescription,
                                 DutyId = dutyId,
-                                CreatedByUserId = _userManager.GetUserId(user),
+                                CreatedByUserId = userId,
                                 CreatedOn = DateTime.UtcNow
 
                             }
                         },
-                        CreatedByUserId = _userManager.GetUserId(user),
+                        CreatedByUserId = userId,
                         CreatedOn = DateTime.UtcNow
                     }
                     
 
                 },
-                CreatedByUserId = _userManager.GetUserId(user),
+                CreatedByUserId = userId,
                 CreatedOn = DateTime.UtcNow
             };
             _context.StudySessions.Add(studySession);
-            var userId = _userManager.GetUserId(user);
-            User currentUser = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));
             if(currentUser.Sessions is null)
             {
             currentUser.Sessions = new List<UserStudySession>()
@@ -176,17 +176,9 @@ namespace StudyTimer.MVC.Services
             return categories;
         }
 
-        public Category GetCategoryById(string id)
+        public Category? GetCategoryById(string id)
         {
-            List<Category> categoryList = _context.Categories.ToList();
-            foreach (Category category in categoryList)
-            {
-                if(category.Id == Guid.Parse(id))
-                {
-                    return category;
-                }
-            }
-            return null;
+            return _context.Categories.FirstOrDefault(x => x.Id == Guid.Parse(id));
         }
 
     }
