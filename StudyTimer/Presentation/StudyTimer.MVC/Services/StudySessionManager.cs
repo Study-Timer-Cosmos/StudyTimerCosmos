@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using StudyTimer.Application.Repositories.StudySessionRepositories;
+using StudyTimer.Application.Repositories.UserRepositories;
 using StudyTimer.Domain.Entities;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models.Home;
@@ -15,13 +16,15 @@ namespace StudyTimer.MVC.Services
         private readonly UserManager<User> _userManager;
         private readonly IStudySessionReadRepository _studySessionReadRepository;
         private readonly IStudySessionWriteRepository _studySessionWriteRepository;
+        private readonly IUserStudySessionReadRepository _userStudySessionReadRepository;
 
-        public StudySessionManager(StudyTimerDbContext context, UserManager<User> userManager, IStudySessionReadRepository studySessionReadRepository, IStudySessionWriteRepository studySessionWriteRepository)
+        public StudySessionManager(StudyTimerDbContext context, UserManager<User> userManager, IStudySessionReadRepository studySessionReadRepository, IStudySessionWriteRepository studySessionWriteRepository, IUserStudySessionReadRepository userStudySessionReadRepository)
         {
             _context = context;
             _userManager = userManager;
             _studySessionReadRepository = studySessionReadRepository;
             _studySessionWriteRepository = studySessionWriteRepository;
+            _userStudySessionReadRepository = userStudySessionReadRepository;
         }
 
         public HomeCreateStudySessionResponseModel Create(HomeCreateStudySessionViewModel model, ClaimsPrincipal user)
@@ -116,9 +119,7 @@ namespace StudyTimer.MVC.Services
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             User User = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));
 
-            List<UserStudySession> sessions = _context.UserStudySessions
-                .Where(x => x.UserId == Guid.Parse(userId))
-                .ToList();
+            List<UserStudySession> sessions = _userStudySessionReadRepository.GetFromUserId(Guid.Parse(userId));
 
             int totalSessions = sessions.Count();
 
@@ -165,7 +166,7 @@ namespace StudyTimer.MVC.Services
 
         public List<Category> GetUserCategories(ClaimsPrincipal user)
         {
-            List<UserStudySession> userStudySessions = _context.UserStudySessions.Where(x => x.UserId == Guid.Parse(_userManager.GetUserId(user))).ToList();
+            List<UserStudySession> userStudySessions = _userStudySessionReadRepository.GetFromUserId(Guid.Parse(_userManager.GetUserId(user)));
             List<Duty> duties = new();
             foreach (UserStudySession userStudySession in userStudySessions)
             {

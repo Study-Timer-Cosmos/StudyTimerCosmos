@@ -23,7 +23,7 @@ namespace StudyTimer.Persistence.Repositories
 
         public T GetById(TId id)
         {
-            return Table.FirstOrDefault(x => Guid.Parse(x.Id.ToString()) == Guid.Parse(id.ToString()));
+            return Table.FirstOrDefault(x => x.Id.ToString() == id.ToString());
         }
     }
 }
