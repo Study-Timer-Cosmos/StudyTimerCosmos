@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using StudyTimer.Application.Repositories.DutyRepositories;
 using StudyTimer.Application.Repositories.StudySessionRepositories;
 using StudyTimer.Application.Repositories.UserRepositories;
 using StudyTimer.Domain.Entities;
@@ -17,14 +18,16 @@ namespace StudyTimer.MVC.Services
         private readonly IStudySessionReadRepository _studySessionReadRepository;
         private readonly IStudySessionWriteRepository _studySessionWriteRepository;
         private readonly IUserStudySessionReadRepository _userStudySessionReadRepository;
+        private readonly IDutyReadRepository _dutyReadRepository;
 
-        public StudySessionManager(StudyTimerDbContext context, UserManager<User> userManager, IStudySessionReadRepository studySessionReadRepository, IStudySessionWriteRepository studySessionWriteRepository, IUserStudySessionReadRepository userStudySessionReadRepository)
+        public StudySessionManager(StudyTimerDbContext context, UserManager<User> userManager, IStudySessionReadRepository studySessionReadRepository, IStudySessionWriteRepository studySessionWriteRepository, IUserStudySessionReadRepository userStudySessionReadRepository, IDutyReadRepository dutyReadRepository)
         {
             _context = context;
             _userManager = userManager;
             _studySessionReadRepository = studySessionReadRepository;
             _studySessionWriteRepository = studySessionWriteRepository;
             _userStudySessionReadRepository = userStudySessionReadRepository;
+            _dutyReadRepository = dutyReadRepository;
         }
 
         public HomeCreateStudySessionResponseModel Create(HomeCreateStudySessionViewModel model, ClaimsPrincipal user)
@@ -137,7 +140,7 @@ namespace StudyTimer.MVC.Services
             foreach (var userSession in sessions)
             {
                 StudySession studySession = userSession.StudySession;
-                List<Duty> sessionDuties = _context.Duties.Where(x => x.SessionId == studySession.Id).ToList();
+                List<Duty> sessionDuties = _dutyReadRepository.GetFromSessionId(studySession.Id);
                 allDuties.AddRange(sessionDuties);
             }
             completedDutiesCount = allDuties.Where(x => x.isFinished).Count();
@@ -170,7 +173,7 @@ namespace StudyTimer.MVC.Services
             List<Duty> duties = new();
             foreach (UserStudySession userStudySession in userStudySessions)
             {
-                duties.AddRange(_context.Duties.Where(x => x.SessionId == userStudySession.StudySessionId).ToList());
+                duties.AddRange(_dutyReadRepository.GetFromSessionId(userStudySession.StudySessionId));
             }
             List<Category> categories = new();
             foreach (Duty duty in duties)
