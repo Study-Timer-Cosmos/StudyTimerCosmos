@@ -24,13 +24,21 @@ namespace StudyTimer.MVC.Services
             DateTimeOffset now = DateTimeOffset.UtcNow;
             Guid id = Guid.NewGuid();
             Guid dutyId = Guid.NewGuid();
-
-            StudySession studySession = new()
+            Category? category = _context.Categories.FirstOrDefault(x => x.Name == model.CategoryName);
+            if(category is not null)
             {
-                Id = id,
-                StartTime = now,
-                EndTime = now.AddMinutes(model.SelectedTime),
-                Duties = new List<Duty>()
+                model.CategoryId = category.Id;
+            }
+            StudySession studySession;
+            if (model.CategoryId is null)
+            {
+
+                 studySession = new()
+                {
+                    Id = id,
+                    StartTime = now,
+                    EndTime = now.AddMinutes(model.SelectedTime),
+                    Duties = new List<Duty>()
                 {
                     new()
                     {
@@ -55,12 +63,44 @@ namespace StudyTimer.MVC.Services
                         CreatedByUserId = _userManager.GetUserId(user),
                         CreatedOn = DateTime.UtcNow
                     }
-                    
+
 
                 },
-                CreatedByUserId = _userManager.GetUserId(user),
-                CreatedOn = DateTime.UtcNow
-            };
+                    CreatedByUserId = _userManager.GetUserId(user),
+                    CreatedOn = DateTime.UtcNow
+                };
+            }
+            else 
+            {
+
+                studySession = new()
+                {
+                    Id = id,
+                    StartTime = now,
+                    EndTime = now.AddMinutes(model.SelectedTime),
+                    Duties = new List<Duty>()
+                {
+                    new()
+                    {
+                        Id = dutyId,
+                        Topic = model.Topic,
+                        isFinished = false,
+                        TaskTime = TimeSpan.FromMinutes(model.SelectedTime),
+                        SessionId = id,
+                        Categories = new List<Category>()
+                        {
+                           category
+                        },
+                        CreatedByUserId = _userManager.GetUserId(user),
+                        CreatedOn = DateTime.UtcNow
+                    }
+
+
+                },
+                    CreatedByUserId = _userManager.GetUserId(user),
+                    CreatedOn = DateTime.UtcNow
+                };
+            }
             _context.StudySessions.Add(studySession);
             var userId = _userManager.GetUserId(user);
             User currentUser = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));

@@ -7,6 +7,7 @@ using StudyTimer.MVC.Models;
 using StudyTimer.MVC.Models.Home;
 using StudyTimer.MVC.Services;
 using System.Diagnostics;
+using System.Drawing.Design;
 
 namespace StudyTimer.MVC.Controllers
 {
@@ -58,7 +59,8 @@ namespace StudyTimer.MVC.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                if(viewModel.CategoryName is null)
+                Console.WriteLine("Category name: "+viewModel.CategoryName);
+                if (viewModel.CategoryName is null)
                 {
                     string id = viewModel.SelectedCategoryId;
                     Category category = _studySessionManager.GetCategoryById(id);
