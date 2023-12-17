@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using StudyTimer.Application.Repositories.StudySessionRepositories;
 using StudyTimer.Domain.Entities;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models.Home;
@@ -12,13 +13,15 @@ namespace StudyTimer.MVC.Services
     {
         private readonly StudyTimerDbContext _context;
         private readonly UserManager<User> _userManager;
-        private readonly StudySessionReadRepository _studySessionReadRepository;
+        private readonly IStudySessionReadRepository _studySessionReadRepository;
+        private readonly IStudySessionWriteRepository _studySessionWriteRepository;
 
-        public StudySessionManager(StudyTimerDbContext context, UserManager<User> userManager, StudySessionReadRepository studySessionReadRepository)
+        public StudySessionManager(StudyTimerDbContext context, UserManager<User> userManager, IStudySessionReadRepository studySessionReadRepository, IStudySessionWriteRepository studySessionWriteRepository)
         {
             _context = context;
             _userManager = userManager;
             _studySessionReadRepository = studySessionReadRepository;
+            _studySessionWriteRepository = studySessionWriteRepository;
         }
 
         public HomeCreateStudySessionResponseModel Create(HomeCreateStudySessionViewModel model, ClaimsPrincipal user)
@@ -66,7 +69,7 @@ namespace StudyTimer.MVC.Services
                 CreatedByUserId = userId,
                 CreatedOn = DateTime.UtcNow
             };
-            _context.StudySessions.Add(studySession);
+            _studySessionWriteRepository.Add(studySession);
             if (currentUser.Sessions is null)
             {
                 currentUser.Sessions = new List<UserStudySession>()
@@ -99,7 +102,7 @@ namespace StudyTimer.MVC.Services
 
 
 
-            _context.SaveChanges();
+            _studySessionWriteRepository.SaveChanges();
 
             return new()
             {
