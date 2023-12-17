@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudyTimer.Domain.Entities
 {
-    public class StudySession : IEntityBase<Guid>, ICreatedOn, IDeletedOn, IModifiedOn
+    public class StudySession : EntityBase<Guid>
     {
         public Guid Id { get; set; }
         public DateTimeOffset StartTime { get; set; }
@@ -16,12 +16,12 @@ namespace StudyTimer.Domain.Entities
         public ICollection<UserStudySession> Sessions { get; set; }
 
 
-        public DateTimeOffset? ModifiedOn { get; set; }
-        public string? ModifiedByUserId { get; set; }
-        public string? DeletedByUserId { get; set; }
-        public DateTimeOffset? DeletedOn { get; set; }
-        public bool IsDeleted { get; set; }
-        public string CreatedByUserId { get; set; }
-        public DateTime CreatedOn { get; set; }
+        //public DateTimeOffset? ModifiedOn { get; set; }
+        //public string? ModifiedByUserId { get; set; }
+        //public string? DeletedByUserId { get; set; }
+        //public DateTimeOffset? DeletedOn { get; set; }
+        //public bool IsDeleted { get; set; }
+        //public string CreatedByUserId { get; set; }
+        //public DateTime CreatedOn { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿@using StudyTimer.MVC.Models.Auth;
-@using StudyTimer.Domain.Enums
+@using StudyTimer.Domain.Enums;
 @model AuthViewModel
+
+
 
 <head>
     <meta charset="UTF-8">
@@ -11,58 +13,61 @@
 
     <div class="min-h-screen flex items-center justify-center">
         <div class="w-full max-w-xs">
-            <form asp-action="Register" asp-controller="Auth" method="post" class="bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4" novalidate>
+        <form asp-action="Register" asp-controller="Auth" method="post" class="bg-gray-200 shadow-md rounded px-8 pt-6 pb-8 mb-4" novalidate>
                 <div class="mb-4">
                     <h2 class="text-center text-3xl mb-6">🚀 Register</h2>
                     <div class="form-group mb-3">
-                        <label class="block text-gray-200 text-sm font-bold mb-2" for="Email">
-                            📧 Email
-                        </label>
-                        <input asp-for="Email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="Email" type="email" placeholder="Email" required>
-                        <div class="invalid-feedback">Email is required.</div>
+                          <div class="form-group">
+                        <label class="block text-black text-sm font-bold mb-2" for="Email"> 📧 Email</label>
+                        <input asp-for="Email" type="email" class="form-control" id="Email" placeholder="Email">
+                        <span asp-validation-for="Email" class="text-red-500"></span>
+                    </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label class="block text-gray-200 text-sm font-bold mb-2" for="UserName">
-                            🌌 Username
-                        </label>
-                        <input asp-for="UserName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="UserName" type="text" placeholder="Username" required minlength="2">
-                        <div class="invalid-feedback">Username is required and must be at least 2 characters long.</div>
+                    <div class="form-group">
+
+                        <label class="block text-black text-sm font-bold mb-2" for="UserName">🌌 Username</label>
+                        <input asp-for="UserName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="UserName" type="text" placeholder="Username">
+                        <span asp-validation-for="UserName" class="text-red-500"></span>
                     </div>
-                    <div class="form-group mb-3">
-                        <label class="block text-gray-200 text-sm font-bold mb-2" for="Password">
-                            🔑 Password
-                        </label>
-                        <input asp-for="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="Password" type="password" placeholder="******************" required minlength="6">
-                        <div class="invalid-feedback">Password is required and must be at least 6 characters long.</div>
                     </div>
+
                     <div class="form-group mb-3">
-                        <label class="block text-gray-200 text-sm font-bold mb-2" for="FirstName">
-                            🚀 First Name
-                        </label>
+                    <div class="form-group">
+                        <label class="block text-black text-sm font-bold mb-2" for="Password"> 🔑 Password </label>
+                        <input asp-for="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="Password" type="password" placeholder="******************">
+                        <span asp-validation-for="Password" class="text-red-500"></span>
+                    </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                    <div class="form-group">
+                        <label class="block text-black text-sm font-bold mb-2" for="FirstName"> 🚀 First Name </label>
                         <input asp-for="FirstName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="FirstName" type="text" placeholder="First Name" required>
-                        <div class="invalid-feedback">First Name is required.</div>
+                        <span asp-validation-for="FirstName" class="text-red-500"></span>
+                    </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label class="block text-gray-200 text-sm font-bold mb-2" for="LastName">
-                            🌌 Last Name
-                        </label>
+                    <div class="form-group">
+                        <label class="block text-black text-sm font-bold mb-2" for="LastName"> 🌌 Last Name </label>
                         <input asp-for="LastName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="LastName" type="text" placeholder="Last Name" required>
-                        <div class="invalid-feedback">Last Name is required.</div>
+                        <span asp-validation-for="LastName" class="text-red-500"></span>
+                    </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label class="block text-gray-200 text-sm font-bold mb-2" for="BirthDate">
-                            📅 Birth Date
-                        </label>
+                    <div class="form-group">
+                        <label class="block text-black text-sm font-bold mb-2" for="BirthDate"> 📅 Birth Date </label>
                         <input asp-for="BirthDate" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="BirthDate" type="date">
+                        <span asp-validation-for="BirthDate" class="text-red-500"></span>
+                    </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label class="block text-gray-200 text-sm font-bold mb-2" for="Gender">
-                            🚻 Gender
-                        </label>
+                    <div class="form-group">
+                        <label class="block text-black text-sm font-bold mb-2" for="Gender"> 🚻 Gender </label>
                         <select asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="Gender" required>
                             <option value="">Select Gender</option>
                         </select>
-                        <div class="invalid-feedback">Gender is required.</div>
+                        </div>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">

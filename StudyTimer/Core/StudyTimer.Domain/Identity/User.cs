@@ -16,5 +16,7 @@ namespace StudyTimer.Domain.Identity
         public DateTimeOffset? ModifiedOn { get; set; }
         public string? ModifiedByUserId { get; set; }
         public ICollection<UserStudySession> Sessions { get; set; }
+
+        
     }
 }

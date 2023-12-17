@@ -1,16 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using StudyTimer.Domain.Entities;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models;
-using StudyTimer.MVC.Models.Auth;
 using StudyTimer.MVC.Models.Home;
 using StudyTimer.MVC.Services;
-using StudyTimer.Persistence.Contexts;
 using System.Diagnostics;
-using System.Security.Claims;
+using System.Drawing.Design;
 
 namespace StudyTimer.MVC.Controllers
 {
@@ -18,15 +15,11 @@ namespace StudyTimer.MVC.Controllers
     {
         private readonly StudySessionManager _studySessionManager;
         private readonly IToastService _toastService;
-        private readonly StudyTimerDbContext _context;
-        private readonly UserManager<User> _userManager;
 
-        public HomeController(StudySessionManager studySessionManager, IToastService toastService, StudyTimerDbContext context, UserManager<User> userManager)
+        public HomeController(StudySessionManager studySessionManager, IToastService toastService)
         {
             _studySessionManager = studySessionManager;
             _toastService = toastService;
-            _context = context;
-            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -41,14 +34,21 @@ namespace StudyTimer.MVC.Controllers
                 return View(new HomeCreateStudySessionViewModel()
                 {
                     TimeOptions = new List<SelectListItem>
-        {
-            new SelectListItem { Value = "1", Text = "1 minute" },
-            new SelectListItem { Value = "5", Text = "5 minutes" },
-            new SelectListItem { Value = "10", Text = "10 minutes" },
-            new SelectListItem { Value = "15", Text = "15 minutes" },
-            new SelectListItem { Value = "30", Text = "30 minutes" }
-        }
-                });
+                    {
+                        new SelectListItem { Value = "1", Text = "1 minute" },
+                        new SelectListItem { Value = "5", Text = "5 minutes" },
+                        new SelectListItem { Value = "10", Text = "10 minutes" },
+                        new SelectListItem { Value = "15", Text = "15 minutes" },
+                        new SelectListItem { Value = "30", Text = "30 minutes" }
+                    },
+                    Categories = _studySessionManager.GetUserCategories(User).ConvertAll(new Converter<Category, SelectListItem>(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    }))  
+              
+                }
+                );
             }
 
             return RedirectToAction("Login", "Auth");
@@ -59,6 +59,16 @@ namespace StudyTimer.MVC.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
+                Console.WriteLine("Category name: "+viewModel.CategoryName);
+                if (viewModel.CategoryName is null)
+                {
+                    string id = viewModel.SelectedCategoryId;
+                    Category category = _studySessionManager.GetCategoryById(id);
+                    viewModel.CategoryDescription = category.Description;
+                    viewModel.CategoryName = category.Name;
+                    viewModel.CategoryId = category.Id;
+                }
+
                 HomeCreateStudySessionResponseModel responseModel = _studySessionManager.Create(viewModel, User);
 
                 if (responseModel.Succeeded)
@@ -68,7 +78,7 @@ namespace StudyTimer.MVC.Controllers
                     return RedirectToAction("StudySession", model);
                 }
             }
-            
+
             _toastService.FailureMessage("Error");
 
             return RedirectToAction(nameof(Index));
@@ -102,60 +112,8 @@ namespace StudyTimer.MVC.Controllers
                 return View(model);
             }
             return View();
-                
+
         }
-        //public IActionResult Statistics(ClaimsPrincipal user)
-        //{
-        //    var userId = _userManager.GetUserId(user);
-        //    //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    User User = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));
-        //    int totalSessions =User.Sessions.ToList().Count;
-
-        //    List<UserStudySession> sessions = User.Sessions.ToList();
-        //    TimeSpan totalTime = TimeSpan.Zero; 
-        //    foreach(var session in sessions) 
-        //    {
-        //        TimeSpan time = (session.StudySession.EndTime - session.StudySession.StartTime);
-        //        totalTime += time;
-        //    }
-
-        //    List<Duty> allDuties = new List<Duty>();
-        //    foreach (var userSession in sessions) 
-        //    {
-        //        StudySession studySession = userSession.StudySession;
-        //        List<Duty> sessionDuties = studySession.Duties.ToList();
-        //        allDuties.AddRange(sessionDuties);
-        //    }
-
-        //    string mostRepeatedTopic = allDuties
-        //        .GroupBy(x => x.Topic.ToLower()) 
-        //        .OrderByDescending(x => x.Count())
-        //        .Select(x => x.Key)
-        //        .FirstOrDefault();
-
-
-        //    HomeGetStatisticsViewModel viewModel = new()
-        //    {
-        //        TotalStudySessions = totalSessions,
-        //        TotalStudyTime = totalTime,
-        //        MostStudiedTopic = mostRepeatedTopic,
-        //        MostStudiedCategory = "bilmem ne",
-        //        TotalCompletedDuties=0,
-        //        TotalIncompleteDuties=5,
-        //        LastStudySessionDate= DateTime.Now,
-
-
-
-        ////public string MostStudiedCategory { get; set; }
-        ////public int TotalCompletedDuties { get; set; }
-        ////public int TotalIncompleteDuties { get; set; }
-        ////public DateTimeOffset LastStudySessionDate { get; set; }
-
-        //    };
-        //    return View(viewModel);
-
-       // }
-        
 
     }
 }

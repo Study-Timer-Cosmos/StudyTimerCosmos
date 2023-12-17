@@ -22,15 +22,23 @@ namespace StudyTimer.MVC.Services
         {
 
             DateTimeOffset now = DateTimeOffset.UtcNow;
-
             Guid id = Guid.NewGuid();
             Guid dutyId = Guid.NewGuid();
-            StudySession studySession = new()
+            Category? category = _context.Categories.FirstOrDefault(x => x.Name == model.CategoryName);
+            if(category is not null)
             {
-                Id = id,
-                StartTime = now,
-                EndTime = now.AddMinutes(model.SelectedTime),
-                Duties = new List<Duty>()
+                model.CategoryId = category.Id;
+            }
+            StudySession studySession;
+            if (model.CategoryId is null)
+            {
+
+                 studySession = new()
+                {
+                    Id = id,
+                    StartTime = now,
+                    EndTime = now.AddMinutes(model.SelectedTime),
+                    Duties = new List<Duty>()
                 {
                     new()
                     {
@@ -47,13 +55,52 @@ namespace StudyTimer.MVC.Services
                                 Name = model.CategoryName,
                                 Description = model.CategoryDescription,
                                 DutyId = dutyId,
+                                CreatedByUserId = _userManager.GetUserId(user),
+                                CreatedOn = DateTime.UtcNow
+
                             }
-                        }
+                        },
+                        CreatedByUserId = _userManager.GetUserId(user),
+                        CreatedOn = DateTime.UtcNow
                     }
+
+
                 },
-                CreatedByUserId = _userManager.GetUserId(user),
-                CreatedOn = DateTime.UtcNow
-            };
+                    CreatedByUserId = _userManager.GetUserId(user),
+                    CreatedOn = DateTime.UtcNow
+                };
+            }
+            else 
+            {
+
+                studySession = new()
+                {
+                    Id = id,
+                    StartTime = now,
+                    EndTime = now.AddMinutes(model.SelectedTime),
+                    Duties = new List<Duty>()
+                {
+                    new()
+                    {
+                        Id = dutyId,
+                        Topic = model.Topic,
+                        isFinished = false,
+                        TaskTime = TimeSpan.FromMinutes(model.SelectedTime),
+                        SessionId = id,
+                        Categories = new List<Category>()
+                        {
+                           category
+                        },
+                        CreatedByUserId = _userManager.GetUserId(user),
+                        CreatedOn = DateTime.UtcNow
+                    }
+
+
+                },
+                    CreatedByUserId = _userManager.GetUserId(user),
+                    CreatedOn = DateTime.UtcNow
+                };
+            }
             _context.StudySessions.Add(studySession);
             var userId = _userManager.GetUserId(user);
             User currentUser = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));
@@ -67,8 +114,7 @@ namespace StudyTimer.MVC.Services
                     StudySessionId= studySession.Id,
                     CreatedByUserId= userId,
                     CreatedOn = DateTime.UtcNow,
-
-
+                    IsDeleted= false,
                 }
 
             };
@@ -148,15 +194,40 @@ namespace StudyTimer.MVC.Services
                 TotalIncompleteDuties = incompletedDutiesCount,
                 LastStudySessionDate = DateTime.Now,
 
-
-
-                //public string MostStudiedCategory { get; set; }
-                //public int TotalCompletedDuties { get; set; }
-                //public int TotalIncompleteDuties { get; set; }
-                //public DateTimeOffset LastStudySessionDate { get; set; }
-
             };
             return viewModel;
         }
+
+        public List<Category> GetUserCategories(ClaimsPrincipal user)
+        {
+            List<UserStudySession> userStudySessions = _context.UserStudySessions.Where(x => x.UserId == Guid.Parse(_userManager.GetUserId(user))).ToList();
+            List<Duty> duties = new();
+            foreach (UserStudySession userStudySession in userStudySessions)
+            {
+                duties.AddRange(_context.Duties.Where(x => x.SessionId == userStudySession.StudySessionId).ToList());
+            }
+            List<Category> categories = new();
+            foreach (Duty duty in duties)
+            {
+                categories.AddRange(_context.Categories.Where(x => x.DutyId == duty.Id).ToList()
+);
+            }
+
+            return categories;
+        }
+
+        public Category GetCategoryById(string id)
+        {
+            List<Category> categoryList = _context.Categories.ToList();
+            foreach (Category category in categoryList)
+            {
+                if(category.Id == Guid.Parse(id))
+                {
+                    return category;
+                }
+            }
+            return null;
+        }
+
     }
 }

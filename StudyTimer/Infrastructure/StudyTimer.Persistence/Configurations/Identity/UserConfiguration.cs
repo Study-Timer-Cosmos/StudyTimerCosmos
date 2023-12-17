@@ -44,8 +44,8 @@ namespace StudyTimer.Persistence.Configurations.Identity
             builder.Property(x => x.BirthDate).IsRequired(false);
 
             // CreatedByUserId
-            builder.Property(x => x.CreatedOn).IsRequired();
-            builder.Property(x => x.CreatedOn).HasMaxLength(75);
+            builder.Property(x => x.CreatedByUserId).IsRequired();
+            builder.Property(x => x.CreatedByUserId).HasMaxLength(75);
 
             // CreatedOn
             builder.Property(x => x.CreatedOn).IsRequired();
@@ -56,6 +56,8 @@ namespace StudyTimer.Persistence.Configurations.Identity
 
             // LastModifiedOn
             builder.Property(x => x.ModifiedOn).IsRequired(false);
+
+
 
             builder.ToTable("Users");
             

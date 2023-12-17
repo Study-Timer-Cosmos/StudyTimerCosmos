@@ -19,8 +19,6 @@ namespace StudyTimer.Persistence.Configurations.Identity
 
             // Common Fields
 
-           
-
             // CreatedByUserId
             builder.Property(x => x.CreatedByUserId).IsRequired();
             builder.Property(x => x.CreatedByUserId).HasMaxLength(75);

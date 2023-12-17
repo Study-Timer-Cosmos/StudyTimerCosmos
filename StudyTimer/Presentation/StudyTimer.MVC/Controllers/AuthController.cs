@@ -80,7 +80,15 @@ namespace StudyTimer.MVC.Controllers
         public async Task<IActionResult> RegisterAsync(AuthViewModel registerViewModel)
         {
             if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    // Log or debug the error messages
+                    var errorMessage = error.ErrorMessage;
+                }
+
                 return View(registerViewModel);
+            }
 
             AuthResponseModel authRegisterResponseModel = await _authManager.RegisterAsync(registerViewModel);
 
