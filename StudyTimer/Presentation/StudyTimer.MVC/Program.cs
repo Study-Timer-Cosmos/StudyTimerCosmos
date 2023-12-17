@@ -6,6 +6,7 @@ using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models.Validators;
 using StudyTimer.MVC.Services;
 using StudyTimer.Persistence.Contexts;
+using StudyTimer.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services
@@ -85,14 +86,13 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IToastService, ToastService>();
 builder.Services.AddScoped<StudySessionManager>();
 
+builder.Services.AddPersistenceServices();
 
 builder.Services.AddControllersWithViews()
     .AddFluentValidation(x => {
     x.RegisterValidatorsFromAssemblyContaining<RegisterValidator> ();
     x.RegisterValidatorsFromAssemblyContaining<LoginValidator>();
     });
-
-
 
 var app = builder.Build();
 
