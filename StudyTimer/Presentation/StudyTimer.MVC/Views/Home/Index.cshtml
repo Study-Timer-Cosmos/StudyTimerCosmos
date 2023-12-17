@@ -1,1 +1,39 @@
-﻿<h6>Welcome!</h6>
+﻿
+<body class="bg-gray-300 text-gray-800 h-screen flex flex-col justify-center items-center space-y-8">
+    <div id="emojis-container" class="relative w-full h-[480px]">
+        <div id="emoji1" class="emoji">🌍</div>
+        <div id="emoji2" class="emoji">🌖</div>
+    </div>
+    <h1 class="text-5xl font-bold">Welcome to Study Timer Cosmos 🌌 </h1>
+    <p class="text-xl">Embark on an astronomical adventure! 🚀 </p>
+    <div id="emojis-container" class="relative w-full h-[480px]">
+        <div id="emoji3" class="emoji">🌌</div>
+        <div id="emoji4" class="emoji">🪐</div>
+        <div id="emoji5" class="emoji">🌠</div>
+        <div id="emoji6" class="emoji">🌕</div>
+    </div>
+
+    <script>
+        const emojis = document.querySelectorAll('.emoji');
+        const container = document.getElementById('emojis-container');
+        const centerX = container.offsetWidth / 2;
+        const centerY = container.offsetHeight / 2;
+        const radius = 100;
+        const speed = 0.001; // You can adjust the speed as needed
+
+        let angle = 0;
+
+        function animateEmojis() {
+            emojis.forEach((emoji, index) => {
+                const x = centerX + radius * Math.cos(angle + index * (Math.PI / 3));
+                const y = centerY + radius * Math.sin(angle + index * (Math.PI / 3));
+                emoji.style.transform = `translate(${x}px, ${y}px)`;
+            });
+
+            angle += speed;
+            requestAnimationFrame(animateEmojis);
+        }
+
+        animateEmojis();
+    </script>
+</body>
