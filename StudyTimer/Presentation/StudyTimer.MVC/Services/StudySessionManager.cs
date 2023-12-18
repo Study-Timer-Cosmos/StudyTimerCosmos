@@ -45,7 +45,7 @@ namespace StudyTimer.MVC.Services
                 model.CategoryId = category.Id;
             }
             StudySession studySession;
-            String userId = _userManager.GetUserId(user);
+            string userId = _userManager.GetUserId(user);
             DateTime dateTimeNow = DateTime.UtcNow;
             if (model.CategoryId is null)
             {

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using StudyTimer.Domain.Identity;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudyTimer.MVC.Models.Auth;
 using StudyTimer.MVC.Services;
 
@@ -8,17 +6,12 @@ namespace StudyTimer.MVC.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly IToastService _toastService;
         private readonly AuthManager _authManager;
         private readonly IEmailService _emailService;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager,
-          AuthManager authManager, IEmailService emailService, IToastService toastService)
+        public AuthController(AuthManager authManager, IEmailService emailService, IToastService toastService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _authManager = authManager;
             _emailService = emailService;
             _toastService = toastService;
