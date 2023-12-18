@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using StudyTimer.Application.Repositories.CategoryRepositories;
+using StudyTimer.Application.Repositories.DutyRepositories;
+using StudyTimer.Application.Repositories.StudySessionRepositories;
+using StudyTimer.Application.Repositories.UserRepositories;
 using StudyTimer.Domain.Entities;
 using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models.Home;
 using StudyTimer.Persistence.Contexts;
+using StudyTimer.Persistence.Repositories.StudySessionRepositories;
 using System.Security.Claims;
 
 namespace StudyTimer.MVC.Services
@@ -11,26 +16,46 @@ namespace StudyTimer.MVC.Services
     {
         private readonly StudyTimerDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly IStudySessionReadRepository _studySessionReadRepository;
+        private readonly IStudySessionWriteRepository _studySessionWriteRepository;
+        private readonly IUserStudySessionReadRepository _userStudySessionReadRepository;
+        private readonly IDutyReadRepository _dutyReadRepository;
+        private readonly ICategoryReadRepository _categoryReadRepository;
 
-        public StudySessionManager(StudyTimerDbContext context, UserManager<User> userManager)
+        public StudySessionManager(StudyTimerDbContext context, UserManager<User> userManager, IStudySessionReadRepository studySessionReadRepository, IStudySessionWriteRepository studySessionWriteRepository, IUserStudySessionReadRepository userStudySessionReadRepository, IDutyReadRepository dutyReadRepository, ICategoryReadRepository categoryReadRepository)
         {
             _context = context;
             _userManager = userManager;
+            _studySessionReadRepository = studySessionReadRepository;
+            _studySessionWriteRepository = studySessionWriteRepository;
+            _userStudySessionReadRepository = userStudySessionReadRepository;
+            _dutyReadRepository = dutyReadRepository;
+            _categoryReadRepository = categoryReadRepository;
         }
 
         public HomeCreateStudySessionResponseModel Create(HomeCreateStudySessionViewModel model, ClaimsPrincipal user)
         {
 
             DateTimeOffset now = DateTimeOffset.UtcNow;
-
             Guid id = Guid.NewGuid();
             Guid dutyId = Guid.NewGuid();
-            StudySession studySession = new()
+            Category? category = _categoryReadRepository.GetFromName(model.CategoryName);
+            if (category is not null)
             {
-                Id = id,
-                StartTime = now,
-                EndTime = now.AddMinutes(model.SelectedTime),
-                Duties = new List<Duty>()
+                model.CategoryId = category.Id;
+            }
+            StudySession studySession;
+            String userId = _userManager.GetUserId(user);
+            DateTime dateTimeNow = DateTime.UtcNow;
+            if (model.CategoryId is null)
+            {
+
+                studySession = new()
+                {
+                    Id = id,
+                    StartTime = now,
+                    EndTime = now.AddMinutes(model.SelectedTime),
+                    Duties = new List<Duty>()
                 {
                     new()
                     {
@@ -47,36 +72,65 @@ namespace StudyTimer.MVC.Services
                                 Name = model.CategoryName,
                                 Description = model.CategoryDescription,
                                 DutyId = dutyId,
-                                CreatedByUserId = _userManager.GetUserId(user),
-                                CreatedOn = DateTime.UtcNow
+                                CreatedByUserId = userId,
+                                CreatedOn = dateTimeNow
 
                             }
                         },
-                        CreatedByUserId = _userManager.GetUserId(user),
-                        CreatedOn = DateTime.UtcNow
+                        CreatedByUserId = userId,
+                        CreatedOn = dateTimeNow
                     }
-                    
+
 
                 },
-                CreatedByUserId = _userManager.GetUserId(user),
-                CreatedOn = DateTime.UtcNow
-            };
-            _context.StudySessions.Add(studySession);
-            var userId = _userManager.GetUserId(user);
-            User currentUser = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));
-            if(currentUser.Sessions is null)
+                    CreatedByUserId = userId,
+                    CreatedOn = dateTimeNow
+                };
+            }
+            else
             {
-            currentUser.Sessions = new List<UserStudySession>()
+
+                studySession = new()
+                {
+                    Id = id,
+                    StartTime = now,
+                    EndTime = now.AddMinutes(model.SelectedTime),
+                    Duties = new List<Duty>()
+                {
+                    new()
+                    {
+                        Id = dutyId,
+                        Topic = model.Topic,
+                        isFinished = false,
+                        TaskTime = TimeSpan.FromMinutes(model.SelectedTime),
+                        SessionId = id,
+                        Categories = new List<Category>()
+                        {
+                           category
+                        },
+                        CreatedByUserId = userId,
+                        CreatedOn = dateTimeNow
+                    }
+
+
+                },
+                    CreatedByUserId = userId,
+                    CreatedOn = dateTimeNow
+                };
+            }
+            _studySessionWriteRepository.Add(studySession);
+            User currentUser = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));
+            if (currentUser.Sessions is null)
+            {
+                currentUser.Sessions = new List<UserStudySession>()
                 {
                  new()
                 {
                     UserId=Guid.Parse(userId),
                     StudySessionId= studySession.Id,
                     CreatedByUserId= userId,
-                    CreatedOn = DateTime.UtcNow,
+                    CreatedOn = dateTimeNow,
                     IsDeleted= false,
-
-
                 }
 
             };
@@ -89,16 +143,16 @@ namespace StudyTimer.MVC.Services
                     UserId = Guid.Parse(userId),
                     StudySessionId = studySession.Id,
                     CreatedByUserId = userId,
-                    CreatedOn = DateTime.UtcNow,
+                    CreatedOn = dateTimeNow,
 
 
                 });
             }
-            
 
 
 
-            _context.SaveChanges();
+
+            _studySessionWriteRepository.SaveChanges();
 
             return new()
             {
@@ -112,9 +166,7 @@ namespace StudyTimer.MVC.Services
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             User User = _context.Users.FirstOrDefault(x => x.Id == Guid.Parse(userId));
 
-            List<UserStudySession> sessions = _context.UserStudySessions
-                .Where(x => x.UserId == Guid.Parse(userId))
-                .ToList();
+            List<UserStudySession> sessions = _userStudySessionReadRepository.GetFromUserId(Guid.Parse(userId));
 
             int totalSessions = sessions.Count();
 
@@ -122,21 +174,20 @@ namespace StudyTimer.MVC.Services
 
             foreach (var session in sessions)
             {
-                StudySession studySession = _context.StudySessions
-                    .FirstOrDefault(x => x.Id == session.StudySessionId);
+                StudySession studySession = _studySessionReadRepository.GetById(session.StudySessionId);
                 TimeSpan time = (studySession.EndTime - studySession.StartTime);
                 totalTime += time;
             }
 
             List<Duty> allDuties = new List<Duty>();
-            int completedDutiesCount =0;
+            int completedDutiesCount = 0;
             foreach (var userSession in sessions)
             {
                 StudySession studySession = userSession.StudySession;
-                List<Duty> sessionDuties = _context.Duties.Where(x => x.SessionId == studySession.Id).ToList();
+                List<Duty> sessionDuties = _dutyReadRepository.GetFromSessionId(studySession.Id);
                 allDuties.AddRange(sessionDuties);
             }
-            completedDutiesCount = allDuties.Where(x=>x.isFinished).Count();
+            completedDutiesCount = allDuties.Where(x => x.isFinished).Count();
             int incompletedDutiesCount = allDuties.Count() - completedDutiesCount;
 
 
@@ -156,31 +207,31 @@ namespace StudyTimer.MVC.Services
                 TotalIncompleteDuties = incompletedDutiesCount,
                 LastStudySessionDate = DateTime.Now,
 
-
-
-                //public string MostStudiedCategory { get; set; }
-                //public int TotalCompletedDuties { get; set; }
-                //public int TotalIncompleteDuties { get; set; }
-                //public DateTimeOffset LastStudySessionDate { get; set; }
-
             };
             return viewModel;
         }
 
         public List<Category> GetUserCategories(ClaimsPrincipal user)
         {
-            List<UserStudySession> userStudySessions = _context.UserStudySessions.Where(x => x.UserId == Guid.Parse(_userManager.GetUserId(user))).ToList();
+            List<UserStudySession> userStudySessions = _userStudySessionReadRepository.GetFromUserId(Guid.Parse(_userManager.GetUserId(user)));
             List<Duty> duties = new();
             foreach (UserStudySession userStudySession in userStudySessions)
             {
-                duties.AddRange(_context.Duties.Where(x => x.SessionId == userStudySession.StudySessionId).ToList());
+                duties.AddRange(_dutyReadRepository.GetFromSessionId(userStudySession.StudySessionId));
             }
             List<Category> categories = new();
             foreach (Duty duty in duties)
             {
-                categories.AddRange(_context.Categories.Where(x => x.DutyId == duty.Id).ToList());
+                categories.AddRange(_categoryReadRepository.GetFromDutyId(duty.Id));
             }
+
             return categories;
         }
+
+        public Category? GetCategoryById(string id)
+        {
+            return _categoryReadRepository.GetById(Guid.Parse(id));
+        }
+
     }
 }
