@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using StudyTimer.Domain.Entities;
-using StudyTimer.Domain.Identity;
 using StudyTimer.MVC.Models;
 using StudyTimer.MVC.Models.Home;
 using StudyTimer.MVC.Services;
 using System.Diagnostics;
-using System.Drawing.Design;
 
 namespace StudyTimer.MVC.Controllers
 {
