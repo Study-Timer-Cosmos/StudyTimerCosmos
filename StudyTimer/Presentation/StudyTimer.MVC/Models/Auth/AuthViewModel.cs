@@ -1,5 +1,4 @@
 ﻿using StudyTimer.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace StudyTimer.MVC.Models.Auth
 {

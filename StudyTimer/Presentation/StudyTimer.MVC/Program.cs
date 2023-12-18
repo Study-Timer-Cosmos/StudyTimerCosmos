@@ -92,6 +92,7 @@ builder.Services.AddControllersWithViews()
     .AddFluentValidation(x => {
     x.RegisterValidatorsFromAssemblyContaining<RegisterValidator> ();
     x.RegisterValidatorsFromAssemblyContaining<LoginValidator>();
+        x.RegisterValidatorsFromAssemblyContaining<AddDutyValidator>();
     });
 
 var app = builder.Build();

@@ -4,11 +4,13 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <form asp-action="Create" asp-controller="Home" method="post" class="needs-validation" novalidate>
-                <div class="mb-3">
+            <form asp-action="AddDuty" asp-controller="Home" method="post" class="needs-validation" novalidate>
+                <div class="form-group mb-3">
+                    <div class="form-group">
                     <label for="Topic" class="form-label">Topic</label>
-                    <input asp-for="Topic" type="text" class="form-control" id="Topic" required>
-                    <div class="invalid-feedback">Topic is required.</div>
+                    <input asp-for="Topic" type="text" class="form-control" id="Topic">
+                    <span asp-validation-for="Topic" class="text-red-500"></span>
+                </div>
                 </div>
                 <div class="mb-3">
                     <label for="category-select" class="form-label">Select Category</label>
@@ -21,12 +23,12 @@
                 </div>
                 <div class="mb-3">
                     <label for="CategoryName" class="form-label">Category Name</label>
-                    <input asp-for="CategoryName" type="text" class="form-control" id="CategoryName" minlength="2" required>
+                    <input asp-for="CategoryName" type="text" class="form-control" id="CategoryName" minlength="2">
                     <div class="invalid-feedback">Category Name is required and must be at least 2 characters long.</div>
                 </div>
                 <div class="mb-3">
                     <label for="CategoryDescription" class="form-label">Category Description</label>
-                    <input asp-for="CategoryDescription" type="text" class="form-control" id="CategoryDescription" minlength="6" required>
+                    <input asp-for="CategoryDescription" type="text" class="form-control" id="CategoryDescription" minlength="6">
                     <div class="invalid-feedback">Category Description is required and must be at least 6 characters long.</div>
                 </div>
                 <div class="mb-3">

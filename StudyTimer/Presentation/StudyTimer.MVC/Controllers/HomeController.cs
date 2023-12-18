@@ -24,6 +24,7 @@ namespace StudyTimer.MVC.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult AddDuty()
         {
             if (User.Identity.IsAuthenticated)
@@ -42,8 +43,8 @@ namespace StudyTimer.MVC.Controllers
                     {
                         Value = c.Id.ToString(),
                         Text = c.Name
-                    }))  
-              
+                    }))
+
                 }
                 );
             }
@@ -52,27 +53,46 @@ namespace StudyTimer.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateAsync(HomeCreateStudySessionViewModel viewModel)
+        public IActionResult AddDutyAsync(HomeCreateStudySessionViewModel viewModel)
         {
             if (User.Identity.IsAuthenticated)
             {
-                Console.WriteLine("Category name: "+viewModel.CategoryName);
-                if (viewModel.CategoryName is null)
+                if (viewModel.Topic is not null)
                 {
-                    string id = viewModel.SelectedCategoryId;
-                    Category category = _studySessionManager.GetCategoryById(id);
-                    viewModel.CategoryDescription = category.Description;
-                    viewModel.CategoryName = category.Name;
-                    viewModel.CategoryId = category.Id;
+                    if (viewModel.CategoryName is null)
+                    {
+                        string id = viewModel.SelectedCategoryId;
+                        Category category = _studySessionManager.GetCategoryById(id);
+                        viewModel.CategoryDescription = category.Description;
+                        viewModel.CategoryName = category.Name;
+                        viewModel.CategoryId = category.Id;
+                    }
+
+                    HomeCreateStudySessionResponseModel responseModel = _studySessionManager.Create(viewModel, User);
+
+                    if (responseModel.Succeeded)
+                    {
+                        var model = viewModel;
+                        _toastService.SuccessMessage("Success Create Study Sesssion");
+                        return RedirectToAction("StudySession", model);
+                    }
                 }
-
-                HomeCreateStudySessionResponseModel responseModel = _studySessionManager.Create(viewModel, User);
-
-                if (responseModel.Succeeded)
+                else
                 {
-                    var model = viewModel;
-                    _toastService.SuccessMessage("Success Create Study Sesssion");
-                    return RedirectToAction("StudySession", model);
+                    viewModel.Categories = _studySessionManager.GetUserCategories(User).ConvertAll(new Converter<Category, SelectListItem>(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    }));
+                    viewModel.TimeOptions = new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "1", Text = "1 minute" },
+                        new SelectListItem { Value = "5", Text = "5 minutes" },
+                        new SelectListItem { Value = "10", Text = "10 minutes" },
+                        new SelectListItem { Value = "15", Text = "15 minutes" },
+                        new SelectListItem { Value = "30", Text = "30 minutes" }
+                    };
+                    return View(viewModel);
                 }
             }
 
