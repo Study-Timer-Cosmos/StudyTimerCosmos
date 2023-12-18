@@ -1,6 +1,4 @@
-﻿using StudyTimer.Domain.Entities;
-
-namespace StudyTimer.MVC.Models.Home
+﻿namespace StudyTimer.MVC.Models.Home
 {
     public class HomeGetStatisticsViewModel
     {

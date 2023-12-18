@@ -65,7 +65,7 @@ builder.Services.ConfigureApplicationCookie(options =>
         SecurePolicy = CookieSecurePolicy.SameAsRequest // Always
     };
     options.SlidingExpiration = true;
-    options.ExpireTimeSpan = System.TimeSpan.FromDays(7);
+    options.ExpireTimeSpan = TimeSpan.FromDays(7);
     options.AccessDeniedPath = new PathString("/Auth/AccessDenied");
 });
 
@@ -75,7 +75,6 @@ builder.Services.AddOptions();
 builder.Services.AddHttpClient<ResendClient>();
 builder.Services.Configure<ResendClientOptions>(o =>
 {
-    //o.ApiToken = Environment.GetEnvironmentVariable("re_L8odUwat_7aPtnQLNGSjWV62JCuuXMfQj")!; //Dikkat Sil
     o.ApiToken = Environment.GetEnvironmentVariable(connectionStringResend)!;
 });
 

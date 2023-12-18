@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace StudyTimer.MVC.Models.Auth
+﻿namespace StudyTimer.MVC.Models.Auth
 {
     public class AuthLoginViewModel
     {

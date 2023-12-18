@@ -85,8 +85,7 @@ namespace StudyTimer.MVC.Services
 
             if (user is not null)
             {
-                Microsoft.AspNetCore.Identity.SignInResult loginResult = await _signInManager.PasswordSignInAsync(user, authLoginViewModel.Password, true, false);
-                //dikkat Microsoft.AspNetCore.Identity ekledim.
+                SignInResult loginResult = await _signInManager.PasswordSignInAsync(user, authLoginViewModel.Password, true, false);
 
                 if (loginResult.Succeeded)
                 {

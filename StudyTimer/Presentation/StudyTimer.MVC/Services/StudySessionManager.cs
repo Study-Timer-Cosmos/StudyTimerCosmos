@@ -188,7 +188,7 @@ namespace StudyTimer.MVC.Services
                 allDuties.AddRange(sessionDuties);
             }
             completedDutiesCount = allDuties.Where(x => x.isFinished).Count();
-            int incompletedDutiesCount = allDuties.Count() - completedDutiesCount;
+            int incompletedDutiesCount = allDuties.Count - completedDutiesCount;
 
 
             string mostRepeatedTopic = allDuties
