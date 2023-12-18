@@ -7,8 +7,14 @@
     <title>Space-themed Login</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-white text-black font-sans">
+<body class="bg-black text-white font-sans">
     <div class="min-h-screen flex items-center justify-center">
+        <div class="min-h-screen flex flex-col items-center justify-center">
+            <div class="text-center">
+                <h1 class="text-6xl mb-6">🪐 Study Timer</h1>
+                <p class="text-xl mb-4">Focus on your studies among the stars!</p>
+            </div>
+
         <div class="w-full max-w-xs">
             <form asp-action="Login" asp-controller="Auth" method="post" class="bg-gray-200 shadow-md rounded px-8 pt-6 pb-8 mb-4">
                 <div class="mb-4">
