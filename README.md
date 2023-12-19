@@ -30,9 +30,11 @@ Study Timer is a motivational tool for studying that goes beyond a simple countd
     First, we defined the fields that will be displayed to users in HomeGetStatisticsViewModel. We used Repositories in StudySessionManager to fill in these fields. Afterwards, we displayed the fields in the Statistics view for the users.
 
 ## Task Breakdown
-
+- ### [Project To Do Kanban](https://github.com/users/ozgedincer/projects/2)
+  
 - ### [Hakkıcan Bülüç](https://github.com/MrBuluc)
     RepositoryPattern, Entities, Controllers, Request and Response models, AuthManager, EmailService, ToastService, StudySessionManager
 
 ## The Problems We Face
+
 
