@@ -76,17 +76,8 @@
 </head>
 <body class="bg-slate-200 text-black h-screen flex flex-col items-center justify-center">
     <!-- Page Content -->
-    <div class="flex mt-4 mb-4">
-        <!-- Buttons and Content Here -->
-        <button id="startButton" onclick="startRocket()" class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-            Start
-        </button>
-        <button id="stopButton" onclick="stopRocket()" class="bg-red-900 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-            Stop
-        </button>
-    </div>
 
-    <div class="container mx-auto p-4 bg-black rounded-lg">
+    <div class="container mx-auto p-4 mb-8 bg-black rounded-lg">
         <div id="rocket-container">
             <div class="planet planet4">🌞</div>
             <div class="planet planet2">🌑</div>
@@ -97,10 +88,27 @@
         </div>
     </div>
 
-    <div class="flex mt-4 mb-4">
-        <div id="timer" class="text-4xl mt-4 text-white p-4 rounded-lg">Time remaining: 00:00</div>
 
+
+            <div class="bg-black p-6 rounded-lg space-y-4 shadow-lg">
+        <div class="text-center mb-4">
+			<h3 class="text-2xl text-white">Rocket Control Panel </h3>
+        </div>
+
+        <div class="flex justify-center space-x-4 mb-4">
+            <button id="startButton" onclick="startRocket()" class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                Start 🔥
+            </button>
+            <button id="stopButton" onclick="stopRocket()" class="bg-red-900 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Stop ⚠️
+            </button>
+        </div>
+
+        <div class="text-center">
+            <div id="timer" class="text-2xl text-white">Time remaining: <span>00:00</span></div>
+        </div>
     </div>
+
 
 
     <script>
