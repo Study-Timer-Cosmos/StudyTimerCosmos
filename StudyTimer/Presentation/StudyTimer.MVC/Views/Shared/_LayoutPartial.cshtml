@@ -6,29 +6,31 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - StudyTimer.MVC</title>
+    <title>@ViewData["Title"] - StudyTimer Cosmos</title>
 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/StudyTimer.MVC.styles.css" asp-append-version="true" />
+
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">StudyTimer.MVC</a>
+<body style="margin: 0; padding: 0;">
+    <header class="fixed top-0 w-full z-50 bg-gray-300" style="margin: 0; padding: 0;">
+        <div style="margin: 0; padding: 0;">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light bg-gray-300">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="/images/logo.png" alt="StudyTimer Logo" width="85" height="85">
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav d-flex">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
@@ -40,24 +42,27 @@
                             </li>
                             <li class="nav-item">
                                 <form id="logoutForm" asp-controller="Auth" asp-action="Logout" method="post">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Çıkış Yap</button>
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Log Out</button>
                                 </form>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a href="/auth/login" class="nav-link text-dark">Giriş Yap</a>
+                                <a href="/auth/login" class="nav-link text-dark">Sign In</a>
                             </li>
                             <li class="nav-item">
-                                <a href="/auth/register" class="nav-link text-dark">Kayıt Ol</a>
+                                <a href="/auth/register" class="nav-link text-dark">Sign Up</a>
                             </li>
                         }
                     </ul>
                 </div>
             </div>
+
         </nav>
+        </div>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -66,7 +71,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - StudyTimer.MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - StudyTimer - <a>GitHub</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -76,3 +81,4 @@
     @await Component.InvokeAsync("NToastNotify")
 </body>
 </html>
+

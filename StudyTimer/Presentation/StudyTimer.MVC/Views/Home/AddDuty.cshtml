@@ -1,46 +1,75 @@
 ﻿@using StudyTimer.MVC.Models.Home;
 @model HomeCreateStudySessionViewModel
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <form asp-action="Create" asp-controller="Home" method="post" class="needs-validation" novalidate>
-                <div class="mb-3">
-                    <label for="Topic" class="form-label">Topic</label>
-                    <input asp-for="Topic" type="text" class="form-control" id="Topic" required>
-                    <div class="invalid-feedback">Topic is required.</div>
+<br />
+<br />
+<br /><br />
+<style>
+    body {
+        background-color: #f8f9fa;
+        background-image: url('data:image/svg+xml,%3Csvg width="200" height="200" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23ced4da" fill-opacity="0.4"%3E%3Cpath d="M41 0h40v40H41z"/%3E%3Cpath d="M0 41h40v40H0z" opacity=".5" /%3E%3C/g%3E%3C/svg%3E');
+    }
+
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+</style>
+
+<body class="bg-gray-300 d-flex justify-content-center align-items-center">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <h2 class="mb-4 text-center">Create a Study Session 📚</h2>
+                    <form asp-action="Create" asp-controller="Home" method="post" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="Topic" class="form-label">Topic</label>
+                            <input asp-for="Topic" type="text" class="form-control" id="Topic" required>
+                            <div class="invalid-feedback">Please enter a topic.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category-select" class="form-label">Select Category</label>
+                            <select id="category-select" name="SelectedCategoryId" class="form-select">
+                                @foreach (var option in Model.Categories)
+                                {
+                                    <option value="@option.Value">@option.Text</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="CategoryName" class="form-label">Category Name</label>
+                            <input asp-for="CategoryName" type="text" class="form-control" id="CategoryName" minlength="2" required>
+                            <div class="invalid-feedback">Please enter a valid category name (at least 2 characters).</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="CategoryDescription" class="form-label">Category Description</label>
+                            <input asp-for="CategoryDescription" type="text" class="form-control" id="CategoryDescription" minlength="6" required>
+                            <div class="invalid-feedback">Please enter a valid category description (at least 6 characters).</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="time-select" class="form-label">Select Time</label>
+                            <select id="time-select" name="SelectedTime" class="form-select">
+                                @foreach (var option in Model.TimeOptions)
+                                {
+                                    <option value="@option.Value">@option.Text</option>
+                                }
+                            </select>
+                            <div class="invalid-feedback">Please select a study time.</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Create Study Session</button>
+                    </form>
                 </div>
-                <div class="mb-3">
-                    <label for="category-select" class="form-label">Select Category</label>
-                    <select id="category-select" name="SelectedCategoryId" class="form-select">
-                        @foreach (var option in Model.Categories)
-                        {
-                            <option value="@option.Value">@option.Text</option>
-                        }
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="CategoryName" class="form-label">Category Name</label>
-                    <input asp-for="CategoryName" type="text" class="form-control" id="CategoryName" minlength="2" required>
-                    <div class="invalid-feedback">Category Name is required and must be at least 2 characters long.</div>
-                </div>
-                <div class="mb-3">
-                    <label for="CategoryDescription" class="form-label">Category Description</label>
-                    <input asp-for="CategoryDescription" type="text" class="form-control" id="CategoryDescription" minlength="6" required>
-                    <div class="invalid-feedback">Category Description is required and must be at least 6 characters long.</div>
-                </div>
-                <div class="mb-3">
-                    <label for="time-select" class="form-label">Select Time</label>
-                    <select id="time-select" name="SelectedTime" class="form-select">
-                        @foreach (var option in Model.TimeOptions)
-                        {
-                            <option value="@option.Value">@option.Text</option>
-                        }
-                    </select>
-                    <div class="invalid-feedback">Time is required.</div>
-                </div>
-                <button type="submit" class="btn btn-primary">Create Study Session</button>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</body>
