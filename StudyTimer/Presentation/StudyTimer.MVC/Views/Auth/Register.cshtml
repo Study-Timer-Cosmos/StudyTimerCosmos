@@ -9,11 +9,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space-themed Register</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
 
+    <style>
+        body {
+            background: url('https://source.unsplash.com/1920x1080/?space') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            font-family: sans-serif;
+        }
+    </style>
+
+
+</head>
     <div class="min-h-screen flex items-center justify-center">
         <div class="w-full max-w-xs">
-        <form asp-action="Register" asp-controller="Auth" method="post" class="text-white bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4" novalidate>
+        <form asp-action="Register" asp-controller="Auth" method="post" class="text-black bg-gray-200 shadow-md rounded px-8 pt-6 pb-8 mb-" novalidate>
                 <div class="mb-4">
                     <h2 class="text-center text-3xl mb-6">🚀 Register</h2>
                     <div class="form-group mb-3">
@@ -76,6 +86,10 @@
                     </button>
                 </div>
             </form>
+        <div class="text-center">
+            <h1 class="text-6xl mb-6"></h1>
+        
+        </div>
         </div>
     </div>
 
