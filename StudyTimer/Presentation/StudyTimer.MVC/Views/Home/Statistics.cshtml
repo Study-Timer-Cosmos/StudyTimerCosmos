@@ -1,41 +1,40 @@
 ﻿@model StudyTimer.MVC.Models.Home.HomeGetStatisticsViewModel
 
-<div class="container">
+<div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div>
-                <h2>Dive into Your Learning Journey 🚀</h2>
-                <br />
-                <table class="table">
-                    <thead>
+                <h2 class="text-center mb-4">🚀 Dive into Your Learning Journey 📚</h2>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="thead-dark">
                         <tr>
-                            <th>Stat</th>
-                            <th>Value</th>
+                            <th>Stat 📊</th>
+                            <th>Value 🌟</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Total Study Sessions</td>
+                            <td>Total Study Sessions 📅</td>
                             <td>@Model.TotalStudySessions</td>
                         </tr>
                         <tr>
-                            <td>Total Study Time</td>
+                            <td>Total Study Time ⏳</td>
                             <td>@Model.TotalStudyTime</td>
                         </tr>
                         <tr>
-                            <td>Most Studied Topic</td>
+                            <td>Most Studied Topic 📘</td>
                             <td>@Model.MostStudiedTopic</td>
                         </tr>
                         <tr>
-                            <td>Total Completed Duties</td>
+                            <td>Total Completed Duties ✅</td>
                             <td>@Model.TotalCompletedDuties</td>
                         </tr>
                         <tr>
-                            <td>Total Incomplete Duties</td>
+                            <td>Total Incomplete Duties ❌</td>
                             <td>@Model.TotalIncompleteDuties</td>
                         </tr>
                         <tr>
-                            <td>Last Study Session Date</td>
+                            <td>Last Study Session Date 📆</td>
                             <td>@Model.LastStudySessionDate</td>
                         </tr>
                     </tbody>
