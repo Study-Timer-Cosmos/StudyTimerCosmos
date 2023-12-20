@@ -1,170 +1,28 @@
 ﻿﻿@using StudyTimer.MVC.Models.Home;
 @model HomeCreateStudySessionViewModel
 
-
-
-
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        #rocket-container {
-            position: relative;
-            width: 100%;
-            height: 130px;
-            background-color: #000;
-            overflow: hidden;
-        }
-
-        #rocket {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
-            background-color: rgba(255, 153, 0, 0.2);
-            /* Adjust the alpha value (0.0 to 1.0) for transparency */
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
-            font-size: 20px;
-        }
-
-        .planet {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 30px;
-        }
-
-        .planet1 {
-            left: 0%;
-        }
-
-        .planet2 {
-            left: 11%;
-        }
-
-        .planet3 {
-            left: 30%;
-        }
-
-        .planet4 {
-            left: 55%;
-        }
-
-        .planet5 {
-            left: 95%;
-        }
-    </style>
-
-<body class="bg-slate-200 text-black h-screen flex flex-col items-center justify-center">
-
-    <div class="flex mt-4 mb-4">
-        <button id="startButton" onclick="startRocket()" class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-            Start
-        </button>
-        <button id="stopButton" onclick="stopRocket()" class="bg-red-900 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-            Stop
-        </button>
-    </div>
-
-    <div class="container mx-auto p-4 bg-black rounded-lg">
-        <div id="rocket-container">
-            <div class="planet planet4">🌞</div>
-            <div class="planet planet2">🌑</div>
-            <div class="planet planet3">☄️</div>
-            <div class="planet planet5">🪐</div>
-            <div class="planet planet1">🌍</div>
-            <div id="rocket">🚀</div>
-        </div>
-    </div>
-
-    <div class="flex mt-4 mb-4">
-        <div id="timer" class="text-4xl mt-4 text-black p-4 rounded-lg">Time remaining: 00:00</div>
-
-    </div>
-
-
-    <script>
-        let timerInterval;
-
-        function startRocket() {
-            if (!timerInterval) {
-                timerInterval = setInterval(() => {
-                    if (myTimer.timeRemaining > 0) {
-                        myTimer.timeRemaining--;
-                        moveRocket();
-                    }
-                }, 1000);
-            }
-        }
-
-        function stopRocket() {
-            clearInterval(timerInterval);
-            timerInterval = null;
-        }
-
-        function moveRocket() {
-            const rocket = document.getElementById('rocket');
-            const completionPercentage = ((myTimer.initialTime - myTimer.timeRemaining) / myTimer.initialTime) * 100;
-
-            rocket.style.left = `${completionPercentage}%`;
-
-            alignWithPlanet(completionPercentage);
-            updateTimerDisplay();
-        }
-
-        function alignWithPlanet(percentage) {
-            const planets = document.querySelectorAll('.planet');
-
-            planets.forEach(planet => {
-                const planetPercentage = parseInt(planet.style.left) || 0;
-
-                if (Math.abs(planetPercentage - percentage) < 5) {
-                    planet.style.fontSize = '30px'; // Highlight the current planet
-                } else {
-                    planet.style.fontSize = '24px';
-                }
-            });
-        }
-
-        function updateTimerDisplay() {
-            const timerElement = document.getElementById('timer');
-            const minutes = Math.floor(myTimer.timeRemaining / 60);
-            const seconds = myTimer.timeRemaining % 60;
-            const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-            timerElement.textContent = `Time remaining: ${formattedTime}`;
-        }
-
-        function countdownTimer(initialTime) {
-            const timer = {
-                initialTime: initialTime,
-                timeRemaining: initialTime,
-            };
-
-            return timer;
-        }
-
-        const initialTimeInSeconds = @Model.SelectedTime * 60; // Set the initial countdown time in seconds
-        const myTimer = countdownTimer(initialTimeInSeconds);
-    </script>
-
-</body>
-
-@* @using StudyTimer.MVC.Models.Home;
-@model HomeCreateStudySessionViewModel
+@{
+    Layout = null; // Layout kullanımını kaldırır
+}
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rocket to Planets</title>
+    <title>Study Session</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+
     <style>
+
+        body {
+            background: url('https://images.unsplash.com/photo-1583446689741-b39fa2703b22?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixid=MnwxfDB8MXxyYW5kb218MHx8c3BhY2V8fHx8fHwxNzAzMDM1Njk3&ixlib=rb-4.0.3&q=80&w=1920') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            font-family: sans-serif;
+        }
+
+
         #rocket-container {
             position: relative;
             width: 100%;
@@ -180,7 +38,6 @@
             width: 50px;
             height: 50px;
             background-color: rgba(255, 153, 0, 0.2);
-            /* Adjust the alpha value (0.0 to 1.0) for transparency */
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -217,19 +74,10 @@
         }
     </style>
 </head>
+<body class="bg-slate-200 text-black h-screen flex flex-col items-center justify-center">
+    <!-- Page Content -->
 
-<body class="bg-gray-900 text-white h-screen flex flex-col items-center justify-center">
-
-    <div class="flex mt-4 mb-4">
-        <button id="startButton" onclick="startRocket()" class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-            Start
-        </button>
-        <button id="stopButton" onclick="stopRocket()" class="bg-red-900 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-            Stop
-        </button>
-    </div>
-
-    <div class="container mx-auto p-4 bg-black rounded-lg">
+    <div class="container mx-auto p-4 mb-8 bg-black rounded-lg">
         <div id="rocket-container">
             <div class="planet planet4">🌞</div>
             <div class="planet planet2">🌑</div>
@@ -240,10 +88,27 @@
         </div>
     </div>
 
-    <div class="flex mt-4 mb-4">
-        <div id="timer" class="text-4xl mt-4 text-white p-4 rounded-lg">Time remaining: 00:00</div>
 
+
+            <div class="bg-black p-6 rounded-lg space-y-4 shadow-lg">
+        <div class="text-center mb-4">
+			<h3 class="text-2xl text-white">Rocket Control Panel </h3>
+        </div>
+
+        <div class="flex justify-center space-x-4 mb-4">
+            <button id="startButton" onclick="startRocket()" class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                Start 🔥
+            </button>
+            <button id="stopButton" onclick="stopRocket()" class="bg-red-900 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Stop ⚠️
+            </button>
+        </div>
+
+        <div class="text-center">
+            <div id="timer" class="text-2xl text-white">Time remaining: <span>00:00</span></div>
+        </div>
     </div>
+
 
 
     <script>
@@ -310,58 +175,5 @@
         const initialTimeInSeconds = @Model.SelectedTime * 60; // Set the initial countdown time in seconds
         const myTimer = countdownTimer(initialTimeInSeconds);
     </script>
-
 </body>
-
 </html>
-
-
-
-@* @using StudyTimer.MVC.Models.Home;
-@model HomeCreateStudySessionViewModel
-
-    <div id="countdown"></div>
-    <button onclick="startCountdown()">Başlat</button>
-    <button onclick="stopCountdown()">Durdur</button>
-
-    <script>
-        // Geri sayım süresi (saniye cinsinden)
-        var countdownTime = @Model.SelectedTime*60; // Örnekte 5 dakika (5 * 60 saniye)
-        var countdownInterval; // Interval değişkeni
-
-        function startCountdown() {
-          var countdownElement = document.getElementById('countdown');
-
-          // Başlatılmış bir geri sayım varsa önce durdur
-          if (countdownInterval) {
-            clearInterval(countdownInterval);
-          }
-
-          countdownInterval = setInterval(function() {
-            var minutes = Math.floor(countdownTime / 60);
-            var seconds = countdownTime % 60;
-
-            // Zamanı HTML elementine yerleştirme
-            countdownElement.innerHTML = minutes + ' dk ' + seconds + ' sn';
-
-            // Zamanı azaltma
-            countdownTime--;
-
-            // Zaman bittiğinde interval'i temizleme
-            if (countdownTime < 0) {
-              clearInterval(countdownInterval);
-              countdownElement.innerHTML = 'Süre doldu!';
-            }
-          }, 1000); // Her 1 saniyede bir güncelleme
-        }
-
-        function stopCountdown() {
-          clearInterval(countdownInterval);
-          var countdownElement = document.getElementById('countdown');
-          countdownElement.innerHTML = 'Geri sayım durduruldu.';
-        }
-
-        // Sayfa yüklendiğinde geri sayımı başlat
-        window.onload = startCountdown;
-    </script>
- *@

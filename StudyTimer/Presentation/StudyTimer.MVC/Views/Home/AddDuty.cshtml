@@ -4,16 +4,24 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
+           
+                <div class="text-center">
+                    <h1 class="text-4xl mb-1">🪐 Study Timer</h1>
+                    <p class="text-x mb-4">Focus on your studies among the stars!</p>
+                </div>
             <form asp-action="AddDuty" asp-controller="Home" method="post" class="needs-validation" novalidate>
+                <h2 class="text-center mb-4">🔥Create Your Study Session🚀 </h2>
+
+                <!-- Topic -->
                 <div class="form-group mb-3">
-                    <div class="form-group">
-                    <label for="Topic" class="form-label">Topic</label>
-                    <input asp-for="Topic" type="text" class="form-control" id="Topic">
-                    <span asp-validation-for="Topic" class="text-red-500"></span>
+                    <label for="Topic" class="form-label">📚 Topic</label>
+                    <input asp-for="Topic" type="text" class="form-control" id="Topic" placeholder="Enter topic...">
+                    <span asp-validation-for="Topic" class="text-danger"></span>
                 </div>
-                </div>
+
+                <!-- Category Select -->
                 <div class="mb-3">
-                    <label for="category-select" class="form-label">Select Category</label>
+                    <label for="category-select" class="form-label">🏷️ Select Category</label>
                     <select id="category-select" name="SelectedCategoryId" class="form-select">
                         @foreach (var option in Model.Categories)
                         {
@@ -21,27 +29,34 @@
                         }
                     </select>
                 </div>
+
+                <!-- Category Name -->
                 <div class="mb-3">
-                    <label for="CategoryName" class="form-label">Category Name</label>
-                    <input asp-for="CategoryName" type="text" class="form-control" id="CategoryName" minlength="2">
+                    <label for="CategoryName" class="form-label">📝 Category Name</label>
+                    <input asp-for="CategoryName" type="text" class="form-control" id="CategoryName" minlength="2" placeholder="Enter category name or select a category ...">
                     <div class="invalid-feedback">Category Name is required and must be at least 2 characters long.</div>
                 </div>
+
+                <!-- Category Description -->
                 <div class="mb-3">
-                    <label for="CategoryDescription" class="form-label">Category Description</label>
-                    <input asp-for="CategoryDescription" type="text" class="form-control" id="CategoryDescription" minlength="6">
+                    <label for="CategoryDescription" class="form-label">✏️ Category Description</label>
+                    <input asp-for="CategoryDescription" type="text" class="form-control" id="CategoryDescription" minlength="6" placeholder="Enter category description or select a category...">
                     <div class="invalid-feedback">Category Description is required and must be at least 6 characters long.</div>
                 </div>
+
+                <!-- Time Select -->
                 <div class="mb-3">
-                    <label for="time-select" class="form-label">Select Time</label>
+                    <label for="time-select" class="form-label">⏰ Select Time</label>
                     <select id="time-select" name="SelectedTime" class="form-select">
                         @foreach (var option in Model.TimeOptions)
                         {
                             <option value="@option.Value">@option.Text</option>
                         }
                     </select>
-                    <div class="invalid-feedback">Time is required.</div>
                 </div>
-                <button type="submit" class="btn btn-primary">Create Study Session</button>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary">Create Study Session ✨</button>
             </form>
         </div>
     </div>
