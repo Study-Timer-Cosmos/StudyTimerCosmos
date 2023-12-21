@@ -34,6 +34,9 @@ Study Timer is a motivational tool for studying that goes beyond a simple countd
   
 - ### [Hakkıcan Bülüç](https://github.com/MrBuluc)
     RepositoryPattern, Entities, Controllers, Request and Response models, AuthManager, EmailService, ToastService, StudySessionManager
+- ### [Zehra Bengisu Doğan](https://github.com/Bengisoo)
+    Fluent Validation, Controllers, Category Selection Mechanism, Configurations, Identity Mechanism, Database Design, Migrations, Navigation Property
+  
 
 ## The Problems We Face
 
