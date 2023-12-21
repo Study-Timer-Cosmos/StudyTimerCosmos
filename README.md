@@ -37,7 +37,7 @@ Study Timer is a motivational tool for studying that goes beyond a simple countd
 - ### [Zehra Bengisu Doğan](https://github.com/Bengisoo)
     Fluent Validation, Controllers, Category Selection Mechanism, Configurations, Identity Mechanism, Database Design, Migrations, Navigation Property
 - ### [Özge Dinçer](https://github.com/ozgedincer)
-    Database Design, Entities, Controllers, Identity Mechanism, Statistics, User Study Session, Fluent Validation
+    Database Design, Entities, Controllers, Identity Mechanism, Statistics, User Study Session, Fluent Validation, Toaster Notifications
   
 
 ## The Problems We Face
