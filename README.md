@@ -40,6 +40,6 @@ Study Timer is a motivational tool for studying that goes beyond a simple countd
     Database Design, Entities, Controllers, Identity Mechanism, Statistics, User Study Session, Fluent Validation, Toaster Notifications
   
 
-## The Problems We Face
+
 
 
